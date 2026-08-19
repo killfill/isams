@@ -1,0 +1,24 @@
+{
+  "name": "isams-boletin",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Informe de notas desde el portal de apoderados iSAMS: token -> API -> HTML, Markdown o CSV",
+  "scripts": {
+    "boletin": "tsx src/cli.ts",
+    "test": "tsx test/run.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm test"
+  },
+  "bin": {
+    "boletin": "./src/cli.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true
+}

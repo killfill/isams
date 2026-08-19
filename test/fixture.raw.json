@@ -1,0 +1,3622 @@
+{
+ "schemaVersion": "1.0",
+ "tenant": "britishroyal",
+ "extractedAt": "2026-08-19T19:15:00.000Z",
+ "students": [
+  {
+   "key": "s1",
+   "displayName": "Alexander Leon Neumann Lopez",
+   "formGroup": "I-C",
+   "markbooks": [
+    {
+     "id": 1248,
+     "name": "I- English L3 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 38479,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38480,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38481,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38482,
+       "name": "Ev. 4",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38489,
+       "name": "Nota Parcial 1 (Ev. Procesos)",
+       "type": "Calculation",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38452,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "40",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38453,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "64",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38454,
+       "name": "Nota Parcial 4",
+       "type": "Assessment",
+       "value": "40",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38455,
+       "name": "Nota Parcial 5",
+       "type": "Assessment",
+       "value": "60",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38460,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "5.1",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 38470,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "5.1",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1208,
+     "name": "I- Musica Grupo 1 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 36519,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "68",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 36520,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "68",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 36529,
+       "name": "Nota Parcial 1 (Ev. Procesos)",
+       "type": "Calculation",
+       "value": "68",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 36500,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "6.8",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 36510,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "6.8",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1380,
+     "name": "I-C Biologia 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 44947,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 44948,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "65",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 44957,
+       "name": "Nota Parcial 1 (Ev. Procesos)",
+       "type": "Calculation",
+       "value": "67.5",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 44920,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "46",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 44921,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "46",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 44928,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "5.3",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 44938,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "5.3",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1385,
+     "name": "I-C Educacion Fisica 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 45193,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45194,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45202,
+       "name": "Nota Parcial 1 (Ev. Procesos)",
+       "type": "Calculation",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45173,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "7",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45183,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "7",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1425,
+     "name": "I-C Educacion Tecnologica 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 47125,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 47126,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "69",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 47127,
+       "name": "Nota Parcial 4",
+       "type": "Assessment",
+       "value": "65",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 47133,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "6.8",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 47134,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "66",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Notas Parciales S2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 47142,
+       "name": "Promedio Semestral 2",
+       "type": "Calculation",
+       "value": "6.6",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 47143,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "6.7",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1390,
+     "name": "I-C Filosofia 2026 ",
+     "description": null,
+     "columns": [
+      {
+       "id": 45410,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "62",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45411,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "64",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45418,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "6.3",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45428,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "6.3",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1400,
+     "name": "I-C Fisica 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 45927,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "62",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45928,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "62",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45929,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45937,
+       "name": "Nota Parcial 1 (Ev. Procesos)",
+       "type": "Calculation",
+       "value": "62",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45900,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "51",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45901,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "52",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45908,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "5.5",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 45918,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "5.5",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1405,
+     "name": "I-C Historia 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 46172,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "60",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46173,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46174,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": "58",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46182,
+       "name": "Nota Parcial 1 (Ev. Procesos)",
+       "type": "Calculation",
+       "value": "62.7",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46145,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "49",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46146,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "58",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46153,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "5.7",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46154,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "40",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Notas Parciales S2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46162,
+       "name": "Promedio Semestral 2",
+       "type": "Calculation",
+       "value": "4",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46163,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "4.9",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1410,
+     "name": "I-C Lengua y Literatura 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 46390,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "44",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46391,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "40",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46392,
+       "name": "Nota Parcial 4",
+       "type": "Assessment",
+       "value": "46",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46393,
+       "name": "Nota Parcial 5",
+       "type": "Assessment",
+       "value": "58",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46394,
+       "name": "Nota Parcial 6",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46398,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "5.2",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46399,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "38",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Notas Parciales S2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46407,
+       "name": "Promedio Semestral 2",
+       "type": "Calculation",
+       "value": "3.8",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46408,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "4.5",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1415,
+     "name": "I-C Matemática 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 46662,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46663,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "60",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46664,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46672,
+       "name": "Nota Parcial 1 (Ev. Procesos)",
+       "type": "Calculation",
+       "value": "66.7",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46635,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "57",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46636,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "28",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46637,
+       "name": "Nota Parcial 4",
+       "type": "Assessment",
+       "value": "38",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46638,
+       "name": "Nota Parcial 5",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46639,
+       "name": "Nota Parcial 6",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46643,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "5.5",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46673,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46674,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46675,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46676,
+       "name": "Ev. 4",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso (NP1)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46683,
+       "name": "Nota Parcial 1 (Ev. Procesos)",
+       "type": "Calculation",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Notas Parciales S2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46644,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "62",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Notas Parciales S2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46645,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "31",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Notas Parciales S2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46652,
+       "name": "Promedio Semestral 2",
+       "type": "Calculation",
+       "value": "4.7",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46653,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "5.1",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1665,
+     "name": "I-C Promedios 2026",
+     "description": "Promedios de Asignaturas",
+     "columns": [
+      {
+       "id": 54922,
+       "name": "Promedio Final Ciencias Naturales",
+       "type": "Calculation",
+       "value": "5.5",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Promedio Ciencias Naturales"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 54818,
+       "name": "Promedio Final 1S",
+       "type": "Calculation",
+       "value": "6.0",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 54819,
+       "name": "Promedio Final 2S",
+       "type": "Calculation",
+       "value": "4.8",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 54820,
+       "name": "Promedio General",
+       "type": "Calculation",
+       "value": "5.8",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1420,
+     "name": "I-C Quimica 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 46880,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "55",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46881,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "59",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46882,
+       "name": "Nota Parcial 4",
+       "type": "Assessment",
+       "value": "58",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Notas Parciales S1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46888,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "5.7",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 46898,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "5.7",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "s2",
+   "displayName": "Matilda Andrea Neumann Lopez",
+   "formGroup": "7-D",
+   "markbooks": [
+    {
+     "id": 1551,
+     "name": "7- English L4 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 51949,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "38",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51950,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "47",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51951,
+       "name": "Nota Parcial 4",
+       "type": "Assessment",
+       "value": "53",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51957,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "4.6",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51968,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "4.6",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1126,
+     "name": "7-D Artes Visuales 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 32754,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "60",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32757,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32755,
+       "name": "Prueba 1",
+       "type": "Assessment",
+       "value": "43",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32768,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "5",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32798,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "5",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1130,
+     "name": "7-D Ciencias Naturales 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 32934,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "43",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32937,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "68",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32938,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": "58",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32939,
+       "name": "Ev. 4",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32935,
+       "name": "Prueba 1",
+       "type": "Assessment",
+       "value": "55",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32936,
+       "name": "Prueba 2",
+       "type": "Assessment",
+       "value": "65",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32951,
+       "name": "Prueba 3",
+       "type": "Assessment",
+       "value": "50",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32948,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "5.8",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32956,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "56",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32957,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "54",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32977,
+       "name": "Promedio Asignatura Semestre 2",
+       "type": "Calculation",
+       "value": "1.7",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32978,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "3.8",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1604,
+     "name": "7-D Educación Física y Salud 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 53021,
+       "name": "Nota Parcial 1",
+       "type": "Assessment",
+       "value": "63",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 53022,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 53023,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 53024,
+       "name": "Nota Parcial 4",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 53030,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "6.8",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 53041,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "6.8",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1530,
+     "name": "7-D Filosofía de las Emociones 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 51318,
+       "name": "Nota Parcial 1",
+       "type": "Assessment",
+       "value": "63",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51319,
+       "name": "Nota Parcial 2",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51320,
+       "name": "Nota Parcial 3",
+       "type": "Assessment",
+       "value": "63",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51347,
+       "name": "Promedio Cualitativo Semestre 1",
+       "type": "Calculation",
+       "value": "MB",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51328,
+       "name": "Nota Parcial 1",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51348,
+       "name": "Promedio Semestral 2",
+       "type": "Calculation",
+       "value": "MB",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51349,
+       "name": "Promedio Final Anual",
+       "type": "Calculation",
+       "value": "MB",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1138,
+     "name": "7-D Historia, Geografía y Ciencias Sociales 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 33294,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33297,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "66",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33298,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": "44",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33299,
+       "name": "Ev. 4",
+       "type": "Assessment",
+       "value": "36",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33295,
+       "name": "Prueba 1",
+       "type": "Assessment",
+       "value": "64",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33296,
+       "name": "Prueba 2",
+       "type": "Assessment",
+       "value": "63",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33308,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "6.1",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33316,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "63",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33317,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": null,
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33328,
+       "name": "Prueba 1",
+       "type": "Assessment",
+       "value": "60",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33329,
+       "name": "Prueba 2",
+       "type": "Assessment",
+       "value": "58",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33337,
+       "name": "Promedio Asignatura Semestre 2",
+       "type": "Calculation",
+       "value": "6",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33338,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "6.1",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1142,
+     "name": "7-D Lenguaje y Comunicación 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 33474,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "32",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33477,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "48",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33478,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": "38",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33475,
+       "name": "Prueba 1",
+       "type": "Assessment",
+       "value": "35",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33476,
+       "name": "Prueba 2",
+       "type": "Assessment",
+       "value": "46",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33491,
+       "name": "Prueba 3",
+       "type": "Assessment",
+       "value": "63",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33492,
+       "name": "Prueba 4",
+       "type": "Assessment",
+       "value": "55",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33493,
+       "name": "Prueba 5",
+       "type": "Assessment",
+       "value": "52",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33488,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "4.7",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33496,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "68",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33508,
+       "name": "Prueba 1",
+       "type": "Assessment",
+       "value": "50",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33509,
+       "name": "Prueba 2",
+       "type": "Assessment",
+       "value": "45",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33517,
+       "name": "Promedio Asignatura Semestre 2",
+       "type": "Calculation",
+       "value": "5.4",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33518,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "5.1",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1146,
+     "name": "7-D Matemática 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 33654,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "33",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33657,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "50",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33658,
+       "name": "Ev. 3",
+       "type": "Assessment",
+       "value": "38",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33659,
+       "name": "Ev. 4",
+       "type": "Assessment",
+       "value": "31",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33660,
+       "name": "Ev. 5",
+       "type": "Assessment",
+       "value": "32",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33655,
+       "name": "Prueba 1",
+       "type": "Assessment",
+       "value": "34",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33656,
+       "name": "Prueba 2",
+       "type": "Assessment",
+       "value": "51",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33671,
+       "name": "Prueba 3",
+       "type": "Assessment",
+       "value": "32",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33668,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "3.8",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33676,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "51",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33677,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "47",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33697,
+       "name": "Promedio Asignatura Semestre 2",
+       "type": "Calculation",
+       "value": "1.5",
+       "parentGroupings": [
+        {
+         "name": "Semestre 2"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33698,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "2.7",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1150,
+     "name": "7-D Música 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 33834,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33837,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33835,
+       "name": "Prueba 1",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33836,
+       "name": "Prueba 2",
+       "type": "Assessment",
+       "value": "70",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33848,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "7",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33878,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "7",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1582,
+     "name": "7-D Promedios 2026",
+     "description": "Promedios de Asignaturas",
+     "columns": [
+      {
+       "id": 32768,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "5",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Artes Visuales"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32798,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "5",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Artes Visuales"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51957,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "4.6",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Idioma Extranjero Inglés"
+        },
+        {
+         "name": "L4"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51968,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "4.6",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Idioma Extranjero Inglés"
+        },
+        {
+         "name": "L4"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33488,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "4.7",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Lenguaje y Comunicación"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33517,
+       "name": "Promedio Asignatura Semestre 2",
+       "type": "Calculation",
+       "value": "5.4",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Lenguaje y Comunicación"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33518,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "5.1",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Lenguaje y Comunicación"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33668,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "3.8",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Matemática"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33697,
+       "name": "Promedio Asignatura Semestre 2",
+       "type": "Calculation",
+       "value": "1.5",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Matemática"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33698,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "2.7",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Matemática"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33848,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "7",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Música"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33878,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "7",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Música"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 53030,
+       "name": "Promedio Semestral 1",
+       "type": "Calculation",
+       "value": "6.8",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Educación Física y Salud"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 53041,
+       "name": "Promedio Final",
+       "type": "Calculation",
+       "value": "6.8",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Educación Física y Salud"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32948,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "5.8",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Ciencias Naturales"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32977,
+       "name": "Promedio Asignatura Semestre 2",
+       "type": "Calculation",
+       "value": "1.7",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Ciencias Naturales"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 32978,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "3.8",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Ciencias Naturales"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33308,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "6.1",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Historia, Geografía y Ciencias Sociales"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33337,
+       "name": "Promedio Asignatura Semestre 2",
+       "type": "Calculation",
+       "value": "6",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Historia, Geografía y Ciencias Sociales"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 33338,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "6.1",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Historia, Geografía y Ciencias Sociales"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 34028,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "6.7",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Tecnología"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 34058,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "6.7",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Tecnología"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51347,
+       "name": "Promedio Cualitativo Semestre 1",
+       "type": "Calculation",
+       "value": "MB",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Filosofía de las Emociones"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51348,
+       "name": "Promedio Semestral 2",
+       "type": "Calculation",
+       "value": "MB",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Filosofía de las Emociones"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 51349,
+       "name": "Promedio Final Anual",
+       "type": "Calculation",
+       "value": "MB",
+       "parentGroupings": [
+        {
+         "name": "PROMEDIOS 2026"
+        },
+        {
+         "name": "Filosofía de las Emociones"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 52440,
+       "name": "Promedio Final 1S",
+       "type": "Calculation",
+       "value": "5.6",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 52441,
+       "name": "Promedio Final 2S",
+       "type": "Calculation",
+       "value": "3.7",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 52442,
+       "name": "Promedio General",
+       "type": "Calculation",
+       "value": "5.3",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    },
+    {
+     "id": 1154,
+     "name": "7-D Tecnología 2026",
+     "description": null,
+     "columns": [
+      {
+       "id": 34014,
+       "name": "Ev. 1",
+       "type": "Assessment",
+       "value": "67",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 34017,
+       "name": "Ev. 2",
+       "type": "Assessment",
+       "value": "67",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Evaluaciones de Proceso 30%"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 34015,
+       "name": "Prueba 1",
+       "type": "Assessment",
+       "value": "67",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 34016,
+       "name": "Prueba 2",
+       "type": "Assessment",
+       "value": "67",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        },
+        {
+         "name": "Prueba de Unidad (70%)"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 34028,
+       "name": "Promedio Asignatura Semestre 1",
+       "type": "Calculation",
+       "value": "6.7",
+       "parentGroupings": [
+        {
+         "name": "Semestre 1"
+        }
+       ],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      },
+      {
+       "id": 34058,
+       "name": "Promedio Final Asignatura",
+       "type": "Calculation",
+       "value": "6.7",
+       "parentGroupings": [],
+       "absent": false,
+       "hasComments": false,
+       "assessmentDate": null,
+       "outOf": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

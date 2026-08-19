@@ -1,0 +1,14 @@
+node_modules/
+*.log
+
+# Salidas y datos: pueden contener nombres de menores.
+*.html
+*.csv
+*.md
+!docs/*.md
+!README.md
+datos*.json
+modelo*.json
+credenciales.json
+cred*.json
+.DS_Store
