@@ -7,7 +7,10 @@
     "boletin": "tsx src/cli.ts",
     "test": "tsx test/run.ts",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm test"
+    "prepare": "node scripts/build-skill.mjs",
+    "build:skill": "node scripts/build-skill.mjs",
+    "build:skill:check": "node scripts/build-skill.mjs --check",
+    "check": "npm run typecheck && npm test && npm run build:skill:check"
   },
   "bin": {
     "boletin": "./src/cli.ts"

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "types": ["node"],
+    "skipLibCheck": true,
+    "rootDir": "src",
+    "outDir": ".claude/skills/isams-boletin/cli"
+  },
+  "include": ["src/**/*.ts"]
+}

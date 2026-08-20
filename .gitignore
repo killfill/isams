@@ -7,8 +7,16 @@ node_modules/
 *.md
 !docs/*.md
 !README.md
+!.claude/skills/**/*.md
 datos*.json
 modelo*.json
 credenciales.json
 cred*.json
 .DS_Store
+
+# Artefacto de build: el CLI compilado dentro del skill. Lo reconstruye
+# `npm run build:skill` (y `npm install` por su cuenta, via prepare).
+.claude/skills/isams-boletin/cli/
+
+# Empaquetados del skill para distribuir.
+*.zip

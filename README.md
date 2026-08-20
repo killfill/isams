@@ -152,6 +152,12 @@ npm run boletin -- --format md   --from-raw datos.json notas.md
 
 `datos.json` no contiene datos personales (ver abajo).
 
+Los tres formatos llevan los mismos datos con distinta densidad. `html` es la
+vista para leer: matriz completa, una columna por evaluación, con color y
+tooltips. `md` es la misma matriz en tablas de datos, seguida de una tabla por
+asignatura con el bloque, el peso y la nota de cada evaluación: pensado para que
+lo lea otro programa o un modelo. `csv` es una fila por nota.
+
 ## Qué hace
 
 ```
@@ -191,9 +197,15 @@ Códigos de salida: `0` ok · `1` errores con `--strict` · `2` parámetros ·
 ## Estructura
 
 ```
-package.json        scripts: boletin, test, typecheck, check
+package.json        scripts: boletin, test, typecheck, check, build:skill
 tsconfig.json
+tsconfig.build.json compila src/ a JS plano dentro del skill
+.claude/skills/
+  isams-boletin/      skill de Claude Code: cómo usar el CLI. El CLI compilado
+                      vive en cli/, fuera de git. Ver "Skill de Claude Code".
 docs/               referencia de la API y anexos
+scripts/
+  build-skill.mjs     compila src/ dentro del skill y verifica la deriva
 src/
   cli.ts              punto de entrada: valida, orquesta, escribe
   auth.ts             valida el token, deriva el tenant, renueva (§2.5)
@@ -219,6 +231,38 @@ test/
 
 Las salidas (`*.html`, `*.csv`, `datos*.json`) están en `.gitignore`: pueden
 contener nombres de menores.
+
+## Skill de Claude Code
+
+`.claude/skills/isams-boletin/` es un skill que le enseña a Claude Code a usar
+este CLI. Una vez construido lleva el CLI **compilado adentro**, en `cli/`:
+corre con `node` a secas, sin `npm install` ni `node_modules`, y sin necesitar
+este repositorio. Es posible porque el CLI no tiene dependencias de runtime —
+solo `node:fs`, `node:path` y `node:url`.
+
+**`cli/` no está en git**: es un artefacto, y sale de `src/`. Un clone recién
+bajado trae el `SKILL.md` pero no el CLI, así que hay que construirlo antes de
+usar el skill o de copiar la carpeta a otra parte.
+
+```bash
+npm install                 # el hook prepare lo construye solo
+npm run build:skill         # a mano, cuando cambies src/
+npm run build:skill:check   # falla si la copia embebida quedó vieja
+```
+
+Con `npm install --ignore-scripts` el hook no corre: ahí toca `build:skill`.
+
+`build:skill` compila con `tsconfig.build.json`, copia `styles.css` al lado de
+`render/html.js` (que lo lee en runtime), marca la carpeta como ESM y deja un
+sello en `cli/BUILD.json` con la huella de `src/`. Termina con una prueba de
+humo: si el bundle no arranca, el build falla.
+
+**La copia embebida es un artefacto, no una fuente.** Nunca la edites: edita
+`src/` y reconstruye. `npm run check` incluye la verificación de deriva, así que
+un `src/` tocado sin reconstruir falla ruidosamente.
+
+Las credenciales **no** viven en el skill. `credenciales.json` queda en el
+directorio de trabajo, como siempre.
 
 ## Extender
 
