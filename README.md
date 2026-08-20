@@ -30,7 +30,7 @@ npm run boletin -- auth bootstrap  # cómo sacar credenciales del navegador
 
 | Opción                   |                                                                                                              |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `--format <f>`           | `html`, `md` o `csv`. **Requerido.**                                                                         |
+| `--format <f>`           | `html`, `md`, `csv` o `email`. **Requerido.** Ver "Formatos".                                               |
 | `[salida]`               | Archivo de salida. Si se omite, escribe a stdout.                                                            |
 | `--output <archivo>`     | Archivo de salida. También se acepta como posicional.                                                        |
 | `--token <jwt>`          | Access token suelto. Mejor `ISAMS_TOKEN`: en `--token` queda en el historial del shell y es visible en `ps`. |
@@ -259,6 +259,41 @@ que ya tengo?"—. Cada formato tiene la suya. `--quiet` no la silencia: quien
 automatiza es justamente quien la necesita.
 
 **No coincide con `md5sum archivo`**, a propósito.
+
+### El formato `email`
+
+`--format email` emite el informe para el **cuerpo** de un correo. No es el HTML
+de siempre con el CSS movido: es otro documento, porque un cliente de correo no
+es un navegador. Comprobado:
+
+| Lo que usa el HTML web | Qué pasa en el correo |
+| ---------------------- | --------------------- |
+| `<style>` de 6,6 KB | Gmail borra el bloque **entero** si pasa de ~8 KB, si algo no le gusta, o si adentro hay un `background-image: url(...)` |
+| `var(--…)` ×50 | Gmail soporta `var()` pero **no la declaración**: los colores quedan sin valor |
+| `:hover` con 167 tooltips | No existe en correo. Es lo único que dice qué evaluación es cada columna numerada |
+| `display:flex`, `grid`, `position` | Outlook de escritorio usa el motor de Word: no los soporta |
+| `overflow-x` para la tabla ancha | No hay scroll interno en un correo: la tabla se corta |
+
+Por eso el formato `email` va con estilos en línea en cada elemento, colores
+literales y maquetación de tablas, sin un solo bloque `<style>` que Gmail pueda
+borrar.
+
+Es **la misma matriz del HTML**: una columna por evaluación agrupada por
+periodo, el promedio de cada periodo, el final a la derecha, el fondo gris del
+bloque que más pesa y el rojo bajo la nota de aprobación. Lo único que no viaja
+son los tooltips —el HTML esconde ahí el nombre de cada evaluación y en correo
+no existen—, así que las columnas quedan numeradas y el pie remite al informe
+HTML para esa correspondencia. No dice "adjunto": si va adjunto o no lo decide
+quien envía, y el CLI no tiene cómo saberlo.
+
+El tamaño importa: Gmail recorta el mensaje cerca de los 102 KB y no avisa. Con
+dos alumnos el cuerpo pesa ~77 KB, así que la familia grande es el caso que hay
+que vigilar; el CLI avisa pasados los 90 KB.
+
+```bash
+npm run boletin -- --format email  --from-raw datos.json --output cuerpo.html
+npm run boletin -- --format html   --from-raw datos.json --output adjunto.html
+```
 
 ## Qué hace
 

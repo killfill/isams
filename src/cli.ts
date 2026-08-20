@@ -18,12 +18,17 @@ import type { RawExtract } from './types.js';
 const USAGE = `
 boletin — informe de notas desde el portal de apoderados iSAMS
 
-  boletin --format <html|md|csv> --output <archivo>
+  boletin --format <html|md|csv|email> --output <archivo>
   boletin auth refresh           renueva si hace falta y persiste. Una línea a stdout.
   boletin auth status            estado de las credenciales. No consume ni renueva nada.
   boletin auth bootstrap         cómo sacar credenciales del navegador, paso a paso.
 
-  --format <f>           html | md | csv (requerido)
+  --format <f>           html | md | csv | email (requerido)
+                         email: el mismo informe para el CUERPO de un correo
+                         —estilos en línea y tablas, porque Gmail y Outlook
+                         descartan el <style>, las variables CSS y el :hover
+                         del que dependen los tooltips del html. Lleva el
+                         resumen; el detalle va en el html adjunto.
   --output <archivo>     Archivo de salida. También se acepta como argumento
                          posicional. Si se omite, escribe a stdout.
 
@@ -603,6 +608,15 @@ async function cmdReport(args: Args, log: (m: string) => void): Promise<void> {
   } else {
     process.stdout.write(out);
   }
+
+  // Gmail recorta el mensaje a ~102 KB y muestra "ver mensaje completo": el
+  // informe llega a medias sin que nadie se entere de este lado. Crece con cada
+  // alumno de la familia, así que el aviso salta con margen.
+  if (args.format === 'email' && out.length > 90_000)
+    log(
+      `aviso: el cuerpo del correo pesa ${Math.round(out.length / 1024)} KB. Gmail recorta ` +
+        'cerca de 100 KB y el corte es silencioso: revisa cómo llega antes de enviarlo.'
+    );
 
   // Huella del contenido. Va a stderr incluso con --quiet: no es progreso, es
   // salida, y quien la consume desde un script es justamente quien usa --quiet.

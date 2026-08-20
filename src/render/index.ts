@@ -3,6 +3,7 @@ import type { ReportModel, SchoolProfile } from '../types.js';
 import { renderHtml } from './html.js';
 import { renderMarkdown } from './markdown.js';
 import { renderCsv } from './csv.js';
+import { renderEmail } from './email.js';
 
 export interface RenderOptions {
   timeZone?: string;
@@ -10,7 +11,7 @@ export interface RenderOptions {
   year?: string | number;
 }
 
-export type Format = 'html' | 'md' | 'csv';
+export type Format = 'html' | 'md' | 'csv' | 'email';
 
 export interface Renderer {
   render: (m: ReportModel, p: SchoolProfile, o?: RenderOptions) => string;
@@ -23,6 +24,9 @@ export const RENDERERS: Record<Format, Renderer> = {
   html: { render: renderHtml, extension: 'html', mime: 'text/html' },
   md: { render: renderMarkdown, extension: 'md', mime: 'text/markdown' },
   csv: { render: renderCsv, extension: 'csv', mime: 'text/csv' },
+  // Mismo dato que html, otro documento: estilos en línea y maquetación con
+  // tablas, porque un cliente de correo no es un navegador. Ver email.ts.
+  email: { render: renderEmail, extension: 'html', mime: 'text/html' },
 };
 
 export const FORMATS = Object.keys(RENDERERS) as Format[];

@@ -106,6 +106,7 @@ root, or the absolute path to this skill's `cli/cli.js` from anywhere else. Run
    | Reader | Format | Why |
    |---|---|---|
    | A person — the user wants to *see* the grades | `html` | Full matrix, one column per assessment, with colour, weight shading and hover tooltips. Not readable as text. |
+   | A person, in the **body of an email** | `email` | Every grade, styled to survive Gmail and Outlook. See below — do not send `html` as a body. |
    | A model — you need to read, evaluate or reason over the results | `md` | The same data as data-tables: per student, a summary matrix of subject × term with the final, then one grid per term — subjects down the side, that term's assessments across, with the term average. |
 
    → the `--format` value
@@ -179,6 +180,37 @@ root, or the absolute path to this skill's `cli/cli.js` from anywhere else. Run
    → the figures to report, and a stop signal if any term is unbacked
 5. Report per the Output contract below.
    → the answer, or an explicit statement of what cannot be trusted
+
+### Sending the report by email
+
+**Never put `--format html` in an email body.** It depends on a `<style>` block,
+CSS custom properties and `:hover` tooltips; Gmail drops the block whole once it
+passes ~8KB or trips on one rule, supports `var()` but not the declaration that
+gives it a value, and no mail client has `:hover`. It arrives colourless, and the
+numbered assessment columns lose the tooltips that say what they are.
+
+Send two renders instead:
+
+```bash
+BOLETIN --format email --token-file <abs> --output cuerpo.html    # the body
+BOLETIN --format html  --from-raw <raw>   --output adjunto.html   # the attachment
+```
+
+`email` is the **same matrix as `html`** — one column per assessment grouped by
+term, the term average, the final, the grey shading on the heaviest block, the
+red below the pass mark — rebuilt with every style inline and no `<style>` block
+for Gmail to drop.
+
+One thing does not survive: the hover tooltips that name each numbered column.
+Nothing in email can replace them, and the body says so — it points at the HTML
+report for that mapping without claiming it is attached, because the CLI cannot
+know whether you attached it. **So attach it**, or that pointer has no target.
+
+Do not paste report content into the message yourself — the render already
+contains every grade.
+
+Use `--save-raw` on the first run and `--from-raw` on the second so one
+extraction feeds both renders rather than spending two.
 
 ### Telling whether anything changed
 

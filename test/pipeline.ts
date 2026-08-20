@@ -102,6 +102,107 @@ const html = RENDERERS.html.render(model, britishroyal, { year: 2026 });
 check('html: sin banda de alertas', !html.includes('class="alert"'));
 check('html: pero sigue marcando cada nota bajo la aprobación', html.includes('fail'));
 
+// ── email: lo que un cliente de correo NO perdona ────────────────────────────
+// Cada una de estas corresponde a algo verificado que rompe en Gmail o en el
+// motor de Word de Outlook. Si alguna se cae, el correo llega roto y no hay
+// forma de enterarse desde acá: el que lo ve es el apoderado.
+const mail = RENDERERS.email.render(model, britishroyal, { year: 2026 });
+const prohibido: [string, string][] = [
+  ['<style', 'Gmail borra el bloque entero si pasa de ~8 KB o si algo no le gusta'],
+  ['var(--', 'Gmail soporta var() pero no la declaración: quedaría sin color'],
+  [':hover', 'no existe en correo'],
+  ['data-tip', 'los tooltips cuelgan de :hover'],
+  ['<link', 'los clientes quitan las hojas y fuentes externas'],
+  ['background-image', 'Gmail ha borrado el bloque entero al verlo'],
+  ['display:flex', 'el motor de Word no lo soporta'],
+  ['display:grid', 'el motor de Word no lo soporta'],
+  ['position:', 'sin soporte en el motor de Word'],
+  ['::before', 'pseudo-elementos: se pierden'],
+  ['::after', 'pseudo-elementos: se pierden'],
+  ['overflow', 'no hay scroll interno en un correo'],
+  ['class=', 'Gmail reescribe los nombres de clase'],
+  ['float:', 'el motor de Word lo maqueta mal'],
+  // Observado en Gmail: el título se encimó con la fecha y el nombre del alumno
+  // con su promedio. El saneador trata los elementos de bloque dentro de una
+  // celda de forma inconsistente; los saltos van con <br> y las columnas con
+  // tablas anidadas.
+  ['<div', 'Gmail encima los bloques dentro de una celda'],
+  ['display:block', 'mismo problema: Gmail lo colapsa dentro de <td>'],
+];
+for (const [aguja, porque] of prohibido)
+  check(`email: sin ${aguja} (${porque})`, !mail.includes(aguja));
+
+check('email: maqueta con tablas', (mail.match(/<table/g) ?? []).length >= 3);
+check('email: estilos en línea en cada elemento', (mail.match(/style="/g) ?? []).length > 50);
+check('email: colores literales, no variables', /#[0-9A-Fa-f]{6}/.test(mail));
+check('email: declara color-scheme para frenar la inversión', mail.includes('name="color-scheme"'));
+// 600px es la convención de los correos de marketing; una matriz de ~20
+// columnas no entra ahí y el punto es que se vea como el html revisado.
+check('email: ancho acotado, pero al de una matriz', mail.includes('max-width:1000px'));
+check('email: fluido por debajo de ese ancho', mail.includes('width:100%'));
+check('email: cabe sin que Gmail lo recorte', mail.length < 102_400, `${mail.length} bytes`);
+check('email: trae a los alumnos', model.students.every((s) => mail.includes(s.displayName)));
+check('email: trae los finales', mail.includes('Final'));
+// El CLI no sabe si quien envía va a adjuntar el informe, así que el pie no
+// puede darlo por hecho: remite al informe HTML, que existe siempre.
+check('email: no promete un adjunto que quizá no se mande', !mail.includes('adjunto'));
+check('email: pero sí dice dónde están los nombres', mail.includes('informe HTML'));
+
+// ❗ El correo tiene que traer TODAS las notas y con la MISMA forma que el
+// html, que es la versión que se revisó. La matriz es la misma: una columna por
+// evaluación agrupada por periodo, el promedio de cada periodo, el final. Lo
+// que no viaja son los tooltips —no existen en correo—, así que las columnas
+// quedan numeradas igual que allá pero sin poder decir cuál es cuál.
+const celdasTodas = model.students.flatMap((st) =>
+  st.subjects.flatMap((su) => su.periods.flatMap((per) => per.cells)));
+const conNota = celdasTodas.filter((c) => c.value !== null);
+const enPesos = (n: number) => n.toFixed(1).replace('.', ',');
+const notasAusentes = [...new Set(conNota.map((c) => enPesos(c.value!)))].filter((n) => !mail.includes(n));
+check(`email: trae las ${conNota.length} notas`, notasAusentes.length === 0, notasAusentes.join(' '));
+
+// La grilla tiene exactamente la forma del html: por alumno, por asignatura,
+// una celda de nombre + (n+1) por periodo con evaluaciones + una de final.
+const celdasEsperadas = model.students.reduce((tot, st) => {
+  const porPeriodo = st.periodLabels.reduce(
+    (n, l) => n + ((st.cellsPerPeriod[l] ?? 0) > 0 ? (st.cellsPerPeriod[l] ?? 0) + 1 : 0), 0);
+  return tot + st.subjects.length * (1 + porPeriodo + 1);
+}, 0);
+const celdasEnMail = (mail.match(/<td/g) ?? []).length;
+check('email: la grilla tiene la forma de la del html',
+  celdasEnMail >= celdasEsperadas, `${celdasEnMail} celdas, esperadas al menos ${celdasEsperadas}`);
+check('email: agrupa las columnas por periodo, como el html', mail.includes('colspan='));
+check('email: fija Asignatura y Final a lo alto de las dos filas de cabecera',
+  (mail.match(/rowspan="2"/g) ?? []).length >= 2 * model.students.length);
+check('email: encabeza cada periodo con su nombre',
+  model.students[0].periodLabels.filter((l) => (model.students[0].cellsPerPeriod[l] ?? 0) > 0)
+    .every((l) => mail.includes(l)));
+check('email: columna de promedio por periodo', mail.includes('>Prom<'));
+check('email: promedio general del alumno', mail.includes('Promedio general'));
+// El fondo de la página lo pone el cliente: así el correo se ve parte de la
+// bandeja y no un recorte pegado encima. Solo llevan fondo las celdas donde el
+// gris significa algo.
+check('email: el body no declara fondo', /<body style="[^"]*"/.test(mail) && !/<body style="[^"]*background/.test(mail));
+check('email: sin el gris de página', !mail.includes('#ECEDEF'));
+check('email: sin el fondo de tarjeta', !mail.includes('#FBFCFE'));
+check('email: pero conserva el sombreado del bloque que más pesa', mail.includes('#F0F1F3'));
+check('email: y el rojo bajo la nota de aprobación', mail.includes('#A32E2A'));
+check('email: tacha el promedio publicado cuando lo corrige',
+  !model.students.some((st) => st.subjects.some((su) => su.periods.some((pp) => pp.average.source === 'recalculated')))
+  || mail.includes('line-through'));
+check('email: explica que las columnas van numeradas', mail.includes('numeradas'));
+check('email: usa <br> para separar, no bloques', mail.includes('<br>'));
+// Margen real: esto crece con cada alumno y el recorte de Gmail es silencioso.
+check('email: cabe bajo el recorte de Gmail', mail.length < 102_400, `${mail.length} bytes`);
+
+// Un informe sin respaldo lo dice arriba, donde no se puede no verlo.
+const roto = structuredClone(model);
+roto.verification.mismatches = 2;
+const mailRoto = RENDERERS.email.render(roto, britishroyal, { year: 2026 });
+check('email: avisa cuando hay periodos sin respaldo', mailRoto.includes('sin respaldo'));
+check('email: y lo pone antes que las notas',
+  mailRoto.indexOf('sin respaldo') < mailRoto.indexOf(model.students[0].displayName));
+check('email: sin desajustes no inventa la alerta', !mail.includes('sin respaldo'));
+
 console.log('\n6. Huella del contenido');
 // El problema que resuelve: el HTML lleva impresa la fecha de extracción, así
 // que el md5 del archivo cambia en cada corrida aunque las notas sean idénticas
