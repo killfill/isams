@@ -1,6 +1,8 @@
 import { start } from './mockserver.js';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const b64 = (o: unknown) => Buffer.from(JSON.stringify(o)).toString('base64url');
 const now = Math.floor(Date.now() / 1000);
@@ -25,6 +27,12 @@ function run(args: string[], env: Record<string, string> = {}) {
   }
 }
 
+// ❗ Toda corrida de acá abajo pasa --token o --token-file explícito. Sin
+// ninguno de los dos, el CLI cae en credenciales.json del directorio actual
+// —que en el repo es el archivo REAL del usuario— y una prueba terminaría
+// gastándole la cadena de refresh contra el servidor de verdad.
+const SIN_CREDENCIALES = join(mkdtempSync(join(tmpdir(), 'e2e-')), 'no', 'existe.json');
+
 let pass = 0, failn = 0;
 const check = (name: string, ok: boolean, detail = '') => {
   if (ok) { pass++; console.log(`  ok   ${name}`); }
@@ -32,7 +40,10 @@ const check = (name: string, ok: boolean, detail = '') => {
 };
 
 console.log('\n1. Validación de parámetros');
-check('sin --token falla con código 2', run(['--format', 'html']).code === 2);
+const sinCreds = run(['--format', 'html', '--token-file', SIN_CREDENCIALES]);
+check('sin credenciales falla con código 3', sinCreds.code === 3, sinCreds.err.trim());
+check('  y nombra la ruta absoluta que miró', sinCreds.err.includes(SIN_CREDENCIALES));
+check('  sin haber creado nada', !existsSync(SIN_CREDENCIALES));
 check('sin --format falla con código 2', run(['--token', tok()]).code === 2);
 check('formato inválido falla', run(['--token', tok(), '--format', 'pdf']).code === 2);
 check('flag desconocida falla', run(['--token', tok(), '--format', 'html', '--bogus']).code === 2);

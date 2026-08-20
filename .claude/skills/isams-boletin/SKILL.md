@@ -2,7 +2,8 @@
 name: isams-boletin
 description: Generates the school report card — grades and averages per student, subject and term, pulled live from iSAMS as HTML or Markdown. Use when asked for a student's grades, averages or report card.
 metadata:
-  source: isams-boletin
+  source: https://github.com/killfill/isams
+  provenance: cli/BUILD.json
   cli: cli/cli.js
 ---
 
@@ -67,16 +68,28 @@ Do not produce:
   pasting it buries the answer.
 - **Advice about what to do with the school**, unless asked. Report what the
   grades say; the parent decides what it means.
+- **A token, in any form, anywhere in the conversation.** Credentials move from
+  clipboard to file, or from the project knowledge base to a file, and never
+  through a message.
 
 ## Workflow
 
-Resolve credentials, choose the format from the reader, run the CLI, then read
-the quality-control line before saying anything about the numbers.
+`BOLETIN` below is `node .claude/skills/isams-boletin/cli/cli.js` from a project
+root, or the absolute path to this skill's `cli/cli.js` from anywhere else. Run
+`BOLETIN --help` for the full flag list.
+
+**Pick the mode first, from where the credentials live:**
+
+| Credentials live in | Mode | Why |
+|---|---|---|
+| The filesystem | **Localhost** | The file is the store of record. One invocation does everything. |
+| The project knowledge base | **Managed** | The container filesystem is scratch. The KB is the store of record and only you can reach it. |
 
 ### Variables / Inputs
 
-- CREDENTIALS: path to the credentials file. Default: `credenciales.json`. If
-  absent: run the bootstrap below — it needs the user, so ask before doing
+- CREDENTIALS: absolute path to the credentials file. Localhost default:
+  `credenciales.json`. Managed: `/home/claude/work/credenciales.json`. If there
+  are none, run the bootstrap below — it needs the user, so ask before doing
   anything else.
 - FORMAT: `html` or `md`. If undefined: derive it from the reader, per step 2.
 - OUTPUT: path for the report file. Always set one.
@@ -84,7 +97,7 @@ the quality-control line before saying anything about the numbers.
 ### Steps
 
 1. Check that CREDENTIALS exists. If not, walk the user through the bootstrap
-   below and stop until they have pasted the file.
+   below and stop until they have saved the file.
    → a usable credentials file
 2. Decide who reads the output and pick the format from it.
 
@@ -94,15 +107,55 @@ the quality-control line before saying anything about the numbers.
    | A model — you need to read, evaluate or reason over the results | `md` | The same data as data-tables: the subject × term matrix, then per-subject tables with every assessment, its block, its weight and its grade. |
 
    → the `--format` value
-3. Run the CLI. `BOLETIN` below is
-   `node .claude/skills/isams-boletin/cli/cli.js` from the project root, or the
-   absolute path to this skill's `cli/cli.js` from anywhere else. Run
-   `BOLETIN --help` for flags beyond these three.
+3. Run the CLI, per the mode you picked.
+
+   **Localhost** — one invocation. Renewal is lazy and persists locally before
+   the data API is touched, so there are no courier steps:
 
    ```bash
-   BOLETIN --format html --token-file credenciales.json --output notas.html
-   BOLETIN --format md   --token-file credenciales.json --output notas.md
+   BOLETIN --format html --token-file /abs/path/credenciales.json --output notas.html
    ```
+
+   **Managed (scheduled task)** — five steps, because the store of record is
+   unreachable from inside the container:
+
+   ```
+   1. project_read  claude/credenciales.json
+      → write it to /home/claude/work/credenciales.json with a bash heredoc
+
+   2. BOLETIN auth refresh --token-file /home/claude/work/credenciales.json \
+        --trigger scheduled
+
+   3. if the output says "rotated: yes"
+      → cat /home/claude/work/credenciales.json
+      → project_write claude/credenciales.json
+      retry on 5xx; if it still fails, ABORT
+
+   4. BOLETIN --format md --no-refresh \
+        --token-file /home/claude/work/credenciales.json \
+        --output /home/claude/work/notas.md
+
+   5. cat /home/claude/work/credenciales.journal.jsonl
+      → project_write claude/credenciales.journal.jsonl   (best-effort)
+   ```
+
+   Four rules govern those steps:
+
+   - **Step 3 is exactly one write of one complete document.** Never build the
+     document up across multiple writes — an intermediate state is a
+     valid-looking credentials document with wrong contents.
+   - **If step 3 fails after retries, abort. Do not run step 4.** Losing the
+     report is cheap. Running extraction on a token whose successor exists only
+     in a container about to vanish loses the chain and costs the user a manual
+     browser bootstrap. This is the entire reason the refresh is a separate step.
+   - **Step 4 must pass `--no-refresh`.** Extraction must not be able to rotate a
+     token that will never reach the KB. Step 2 already guaranteed a fresh one.
+   - **Step 5 is best-effort.** A journal sync failure is logged, never fatal,
+     and never a reason to skip or repeat anything above it.
+
+   `rotated: no` in step 2 means the access token was still good and nothing was
+   consumed — skip step 3 entirely rather than rewriting an unchanged document.
+
    → the report file
 4. Read the file back — not stdout, which also carries progress lines. Take the
    quality-control line at the top and check one number in it: **mismatches**.
@@ -141,43 +194,88 @@ the pass mark · `▲` the block that weighs most · `🚩` absence.
 
 ## Credentials
 
-Use `--token-file credenciales.json`. The CLI rewrites it on every run as tokens
-rotate, so it has to stay writable. Renewal is automatic. `ISAMS_TOKEN` as an
-environment variable works for a one-off run with a freshly copied access token,
-which lasts an hour and does not renew. Avoid passing tokens as `--token`: they
-land in shell history and are visible in `ps`.
+Use `--token-file`, always with an absolute path outside interactive use. The
+CLI rewrites that file as tokens rotate, so it has to stay writable; it creates
+any missing directories on the way. Renewal is lazy — it happens only when the
+access token is dead or close to it.
+
+Never pass a token as `--token`: it lands in shell history and is visible in
+`ps`. `ISAMS_TOKEN` as an environment variable is acceptable for a one-off run
+with a freshly copied access token, which lasts an hour and does not renew.
+
+### Diagnosis
+
+`BOLETIN auth status --token-file <abs>` reads the credentials file and the
+journal and prints the state of the chain. It makes no network call, consumes
+nothing and rotates nothing, so it is always safe to run — including while you
+are trying to work out why something else failed.
+
+### Exit codes
+
+| Code | Meaning | What to do |
+|---|---|---|
+| 0 | ok | — |
+| 2 | bad arguments | fix the invocation |
+| 3 | credentials broken or absent | manual bootstrap required. **Do not retry.** |
+| 4 | unexpected error | read the message |
+| 5 | indeterminate — the chain may or may not be alive | **Do not retry automatically.** One deliberate re-run is safe; a second failure means bootstrap. |
 
 ### Bootstrap, when there is no credentials file
 
-Login is interactive and cannot be automated. Ask the user to do it, and give
-them these steps verbatim:
+Login is interactive and cannot be automated: the portal is an OIDC public
+client with no registrable redirect URI. A person has to do it, once.
 
-1. Open an **incognito window** — if the portal stays open in their normal
-   session, its silent renewal competes for the same token chain and
-   intermittently invalidates the CLI's copy.
-2. Log in to the parent portal at `{tenant}.parents.isams.cloud`, open the
-   browser console and run:
+**The CLI prints the steps itself.** Any exit 3 that a browser bootstrap would
+actually fix — no credentials file, or a chain the server has declared dead —
+ends with the full instructions: the console snippet, and the save destination
+with the path you passed already substituted in. To get them without waiting for
+a failure:
 
-   ```js
-   copy(JSON.stringify(
-     (o => ({ accessToken: o.access_token, refreshToken: o.refresh_token, tenant: location.hostname.split('.')[0] }))
-     (JSON.parse(sessionStorage[Object.keys(sessionStorage).find(k => k.startsWith('oidc.user'))]))
-   , null, 2))
-   ```
+```bash
+BOLETIN auth bootstrap --token-file <the absolute path you will use>
+```
 
-3. Paste the clipboard into `credenciales.json`.
-4. **Close the window without logging out.** Logging out revokes the token chain
-   and invalidates what they just copied.
+**Relay that output verbatim. Never reconstruct the snippet from memory and
+never paraphrase it.** Its step order is load-bearing — clipboard first, then
+clear storage, then alert, then navigate away — and an approximate version
+leaves the portal silently renewing in the background, which takes the token
+chain back and breaks the next run. If you need the snippet and it is not in
+front of you, run the command.
+
+Two points worth reinforcing when you pass it on, because users read them as
+optional and they are not:
+
+- **The tab going blank is the point, not a side effect.** It destroys the
+  page's JS context and with it the OIDC silent-renew timer. If the user reopens
+  the portal afterwards, that session takes the chain back.
+- **Do not log out.** Logging out revokes the chain and invalidates what was
+  just copied.
+
+The token goes clipboard → file, or clipboard → file → project document. It
+never passes through the conversation.
 
 ## Gotchas
 
-- **`invalid_grant` is terminal, not transient.** Do not retry and do not add
-  backoff — the token chain is broken and the user has to redo the bootstrap.
-  Retrying only wastes time.
-- **One token chain, one consumer.** If the user has the portal open in a
-  browser while the CLI runs, both rotate the token and invalidate each other.
-  The symptom is `invalid_grant` appearing at random with no pattern. Ask
-  whether the portal is open before diagnosing anything else.
-- **Exit 3 is credentials or API, exit 2 is bad arguments.** A run that exits 3
-  on the first attempt of the day usually means the chain is gone, not that the
-  flags are wrong.
+- **Only one consumer may hold the chain.** Refresh tokens are one-time-use:
+  every renewal invalidates the previous handle, so two consumers rotating the
+  same chain destroy it for each other. The bootstrap snippet enforces single
+  ownership by blanking the portal tab. **If the user re-opens the portal
+  afterwards, that session takes the chain back and the next run fails.** This
+  is the mechanism, not a guess — and it is the most likely cause of a surprise
+  failure.
+- **`invalid_grant` is terminal.** Never retry it and never add backoff. The
+  server no longer recognises the token; only a fresh browser bootstrap fixes it.
+- **Exit 5 means the state is unknown, not broken.** The refresh may have
+  succeeded with the response lost in transit. One deliberate re-run is safe; a
+  second failure means bootstrap. The CLI marks the file `suspect` and says so
+  on the next run.
+- **Do not run the skill manually while a scheduled task may fire.**
+  `project_write` is delete-and-recreate with no compare-and-swap, so two
+  overlapping runs are a silent lost update — and on a rotating credential, a
+  lost update is a dead chain and a manual bootstrap. Nothing in the code
+  prevents this; the journal's `runId` only makes the collision legible
+  afterwards.
+- **Nothing here asserts how long a chain lives.** Access tokens last an hour;
+  the refresh chain's real sliding or absolute lifetime is unmeasured. The
+  journal's `chainAgeSec` accumulates the evidence. Until it says otherwise, do
+  not repeat a number for it.

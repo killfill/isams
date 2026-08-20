@@ -23,6 +23,9 @@ npm run boletin -- --format md --from-raw test/fixture.raw.json
 
 ```
 npm run boletin -- --format <html|md|csv> [--output archivo]
+npm run boletin -- auth refresh    # renueva si hace falta y persiste
+npm run boletin -- auth status     # estado de la cadena; no consume nada
+npm run boletin -- auth bootstrap  # cómo sacar credenciales del navegador
 ```
 
 | Opción                   |                                                                                                              |
@@ -32,12 +35,11 @@ npm run boletin -- --format <html|md|csv> [--output archivo]
 | `--output <archivo>`     | Archivo de salida. También se acepta como posicional.                                                        |
 | `--token <jwt>`          | Access token suelto. Mejor `ISAMS_TOKEN`: en `--token` queda en el historial del shell y es visible en `ps`. |
 | `--refresh-token <jwt>`  | Habilita la renovación. Variable: `ISAMS_REFRESH_TOKEN`.                                                     |
-| `--token-file <ruta>`    | Credenciales en JSON, reescrito en cada renovación.                                                          |
-| `--token-endpoint <url>` | Almacén REST. Ver "Credenciales".                                                                            |
-| `--token-api-key <k>`    | Clave del endpoint. Variable: `ISAMS_TOKEN_API_KEY`.                                                         |
-| `--token-header <n>`     | Cabecera de la clave. Por defecto `Authorization`.                                                           |
+| `--token-file <ruta>`    | Credenciales en JSON, reescrito en cada renovación. Absoluta o relativa. Por defecto `credenciales.json`.    |
 | `--tenant <id>`          | Solo si tienes únicamente el refresh token, que es opaco.                                                    |
 | `--no-refresh`           | No renovar aunque haya refresh token.                                                                        |
+| `--journal <ruta>`       | Bitácora de la cadena. Por defecto, hermana del archivo de credenciales.                                     |
+| `--trigger <t>`          | `manual` o `scheduled`. Queda anotado en la bitácora. Por defecto `manual`.                                  |
 | `--parents-path <lista>` | Lista opaca del apoderado. Por defecto `1,9,8,4,7,6`.                                                        |
 | `--profile <id>`         | Perfil de interpretación. Por defecto, según el tenant del token.                                            |
 | `--year <n>`             | Año académico para el título.                                                                                |
@@ -57,32 +59,65 @@ Hay **dos** tokens y hacen cosas distintas:
 |                 | Dura        | Para qué                                              |
 | --------------- | ----------- | ----------------------------------------------------- |
 | `access_token`  | 1 hora      | Consultar la API de datos.                            |
-| `refresh_token` | indefinido* | Obtener access tokens nuevos sin volver al navegador. |
+| `refresh_token` | sin medir*  | Obtener access tokens nuevos sin volver al navegador. |
 
-\* No verificado. Es lo que permite operar desatendido.
+\* Cuánto vive la cadena —deslizante o absoluta— no está medido, así que no hay
+número que dar. La bitácora lo responde con el tiempo, en `chainAgeSec`.
 
 ### Bootstrap: sacar ambos del navegador
 
-Se hace **una sola vez**. Abre una ventana **de incógnito** —si el portal queda
-abierto en tu sesión normal, su renovación automática compite por la misma
-cadena y te deja el token inválido de forma intermitente—, entra al portal y
-ejecuta en la consola:
+Se hace **una sola vez**. Estos mismos pasos los imprime el CLI —con la ruta que
+le pasaste ya sustituida— tanto en `auth bootstrap` como en cualquier error que
+un bootstrap resuelva, así que no hace falta volver acá:
 
-```js
-copy(
-  JSON.stringify(
-    (o => ({ accessToken: o.access_token, refreshToken: o.refresh_token, tenant: location.hostname.split(".")[0] }))(
-      JSON.parse(sessionStorage[Object.keys(sessionStorage).find(k => k.startsWith("oidc.user"))])
-    ),
-    null,
-    2
-  )
-)
+```bash
+npm run boletin -- auth bootstrap --token-file /ruta/credenciales.json
 ```
 
-Pega el resultado en `credenciales.json`. Después **cierra la ventana sin hacer
-logout**: el logout llama a `/connect/endsession` y con alta probabilidad revoca
-la cadena, inutilizando lo que acabas de copiar.
+Abre una ventana **de incógnito**, entra al portal y ejecuta en la consola:
+
+```js
+;(() => {
+  const k = Object.keys(sessionStorage).find(k => k.startsWith("oidc.user"))
+  if (!k) {
+    alert("No se encontró la sesión OIDC. ¿Iniciaste sesión en el portal?")
+    return
+  }
+  const o = JSON.parse(sessionStorage[k])
+  copy(JSON.stringify({
+    accessToken: o.access_token,
+    refreshToken: o.refresh_token,
+    tenant: location.hostname.split(".")[0],
+  }, null, 2))
+  sessionStorage.removeItem(k)
+  alert(
+    "Credenciales copiadas al portapapeles.\n\n" +
+    "Al cerrar este aviso la pestaña quedará en blanco. Es a propósito: " +
+    "evita que el portal siga renovando el token y te lo invalide.\n\n" +
+    "Guarda el portapapeles como archivo de credenciales (NO lo pegues en el chat)."
+  )
+  location.replace("about:blank")
+})()
+```
+
+La pestaña en blanco es el objetivo del snippet, no un efecto colateral. El
+portal renueva su token solo, en silencio, cada pocos minutos; mientras esa
+pestaña viva compite por la misma cadena y te invalida la copia. Borrar la clave
+de `sessionStorage` no alcanza —oidc-client-ts también tiene el usuario en
+memoria y un renew ya agendado igual se dispara—, así que además hay que
+destruir el contexto JS de la página. `location.replace` hace eso y de paso
+impide que el botón Atrás resucite la sesión. `window.close()` no sirve: Chrome
+solo lo permite en ventanas abiertas por script.
+
+**No hagas logout.** El logout llama a `/connect/endsession` y con alta
+probabilidad revoca la cadena, inutilizando lo que acabas de copiar.
+
+Guarda el portapapeles sin que pase por ningún chat:
+
+```bash
+pbpaste > credenciales.json          # macOS
+Get-Clipboard > credenciales.json    # PowerShell
+```
 
 ```bash
 npm run boletin -- --format html --token-file credenciales.json notas.html
@@ -93,7 +128,7 @@ Si el access token está vencido, se renueva solo y el archivo se reescribe.
 ### Rotación
 
 Cada renovación devuelve un refresh token nuevo e **invalida el anterior**. De
-ahí salen tres consecuencias que no son opcionales:
+ahí salen cuatro consecuencias que no son opcionales:
 
 1. El almacén tiene que ser **escribible**. Un refresh token en una variable de
    entorno fija o en un secreto de solo lectura funciona una vez y después falla.
@@ -103,30 +138,57 @@ ahí salen tres consecuencias que no son opcionales:
    bootstrap.
 4. Una sola cadena, un solo consumidor. No dejes el portal abierto mientras corre.
 
-### Token en un endpoint REST
+### Cómo termina una renovación
 
-Para no guardar credenciales en disco, el almacén puede ser un servicio propio:
-`GET` para leer, `POST` para guardar el rotado.
+Todo intento cae en exactamente uno de tres estados, porque piden cosas
+distintas de quien llama:
+
+| Estado          | Cuándo                                                        | El archivo             | Salida |
+| --------------- | ------------------------------------------------------------- | ---------------------- | ------ |
+| `ok`            | 2xx con `refresh_token`                                       | se reescribe rotado    | `0`    |
+| `dead`          | HTTP 400 `invalid_grant`                                      | queda intacto          | `3`    |
+| `indeterminate` | error de red, 5xx, cuerpo ilegible, o 2xx sin `refresh_token` | se marca `suspect`     | `5`    |
+
+La distinción que importa es `dead` contra `indeterminate`. La primera es una
+afirmación del servidor sobre este token: no reintentes, rehaz el bootstrap. La
+segunda es la **ausencia** de respuesta: el servidor pudo haber rotado la cadena
+y la respuesta perderse en el camino, así que el token del archivo puede estar
+vivo o muerto y no hay forma local de saberlo. Por eso queda marcado, y por eso
+la corrida siguiente lo dice antes de hacer nada.
+
+### Bitácora
+
+Cada interacción con el endpoint de tokens deja una línea JSONL junto al archivo
+de credenciales (`credenciales.journal.jsonl`, o donde diga `--journal`). Existe
+porque la causa de un `invalid_grant` no es reconstruible después: para cuando
+el fallo aparece, el estado que lo explicaba ya fue sobrescrito.
+
+Nunca guarda un token completo —solo colas de 6 caracteres—, rota a 200 líneas,
+y un fallo al escribirla avisa por stderr pero jamás voltea la corrida.
+
+`chainAgeSec` acumula la edad real de la cadena medida desde el `auth_time` del
+access token. **Cuánto vive una cadena de refresh no está medido**: no hay número
+que afirmar en el código ni en la documentación hasta que la bitácora lo diga.
+
+### Diagnóstico
 
 ```bash
-npm run boletin -- --format html \
-  --token-endpoint https://mi-servicio/tokens/isams \
-  --token-api-key "$MI_API_KEY" \
-  --output notas.html
+npm run boletin -- auth status --token-file credenciales.json
 ```
 
-Cuerpo JSON esperado:
-
-```json
-{ "accessToken": "eyJ…", "refreshToken": "…", "expiresAt": "2026-08-19T20:52:08Z", "tenant": "britishroyal" }
+```
+tenant             britishroyal
+access token       vence en 34 min (2026-08-20T13:12:04Z)
+auth_time          2026-08-19T18:02:11Z  (edad de la cadena: 18h 36m)
+refresh token      …8f2a1c
+estado             ok
+última renovación  2026-08-20T12:38:04Z  (ok)
+renovaciones       14 ok · 0 muertas · 1 indeterminada  (últimos 30 días)
 ```
 
-Al leer también se aceptan `access_token` / `refresh_token` y un envoltorio
-`{ "data": { … } }`. La clave va en `Authorization: Bearer <clave>`; con
-`--token-header X-API-Key` se envía cruda en la cabecera que indiques.
-
-**El endpoint debe aceptar el POST.** Si falla al guardar, el token viejo ya fue
-invalidado por el servidor de identidad y la cadena queda rota.
+Solo lee: no llama a la red, no consume ni rota nada, y no imprime más que colas
+de 6 caracteres. Se puede correr siempre, incluso mientras intentas averiguar
+por qué falló otra cosa.
 
 ### Una corrida suelta
 
@@ -192,7 +254,8 @@ el bloque, la detección degradaría en silencio. Usa `--strict` en automatizaci
 | `QUALITATIVE_SUBJECT`   | info  | Escala conceptual; fuera del promedio general.             |
 
 Códigos de salida: `0` ok · `1` errores con `--strict` · `2` parámetros ·
-`3` token o API · `4` inesperado.
+`3` credenciales rotas o ausentes (hace falta bootstrap, **no reintentar**) ·
+`4` inesperado · `5` estado de la cadena indeterminado (**no reintentar**).
 
 ## Estructura
 

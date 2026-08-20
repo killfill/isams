@@ -1,13 +1,6 @@
 node_modules/
 *.log
 
-# Salidas y datos: pueden contener nombres de menores.
-*.html
-*.csv
-*.md
-!docs/*.md
-!README.md
-!.claude/skills/**/*.md
 datos*.json
 modelo*.json
 credenciales.json
@@ -20,3 +13,4 @@ cred*.json
 
 # Empaquetados del skill para distribuir.
 *.zip
+sandbox

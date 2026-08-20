@@ -10,7 +10,7 @@
 
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, readdirSync, statSync, rmSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, statSync, rmSync, mkdirSync, copyFileSync, existsSync, chmodSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -49,6 +49,25 @@ function hashSrc() {
 
 const srcHash = hashSrc();
 
+/**
+ * W10b: de dónde salió este bundle. `srcHash` detecta deriva contra src/, pero
+ * src/ no viaja dentro del skill —así que sin esto, quien tiene el .zip en la
+ * mano no tiene forma de llegar al código que lo produjo.
+ */
+function sourceProvenance() {
+  const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
+  try {
+    return {
+      repo: git('remote', 'get-url', 'origin').replace(/\.git$/, ''),
+      commit: git('rev-parse', 'HEAD'),
+      // Un commit no identifica el fuente si el árbol tenía cambios sin confirmar.
+      dirty: git('status', '--porcelain', '--', 'src') !== '',
+    };
+  } catch {
+    return null;
+  }
+}
+
 if (check) {
   if (!existsSync(STAMP)) {
     console.error('El CLI embebido no existe. Corre: npm run build:skill');
@@ -78,21 +97,35 @@ execFileSync('npx', ['tsc', '-p', 'tsconfig.build.json'], { cwd: ROOT, stdio: 'i
 mkdirSync(join(OUT, 'render'), { recursive: true });
 copyFileSync(join(SRC, 'render', 'styles.css'), join(OUT, 'render', 'styles.css'));
 
-// 3. Marcar la carpeta como ESM: sin esto Node interpreta los .js como CommonJS.
+// 3. Shebang del bundle. El fuente lleva `npx tsx` porque ES TypeScript y el
+//    `bin` del package.json apunta ahí; el bundle es ESM plano y corre con node.
+//    Copiar el shebang del fuente hacía que un `chmod +x` sobre el archivo
+//    embebido disparara una descarga de tsx, justo lo que el skill promete evitar.
+const cliPath = join(OUT, 'cli.js');
+const cliSrc = readFileSync(cliPath, 'utf8');
+const withNode = cliSrc.replace(/^#!.*\n/, '#!/usr/bin/env node\n');
+if (!withNode.startsWith('#!/usr/bin/env node\n'))
+  throw new Error('El CLI embebido quedó sin el shebang de node.');
+writeFileSync(cliPath, withNode);
+chmodSync(cliPath, 0o755);
+
+// 4. Marcar la carpeta como ESM: sin esto Node interpreta los .js como CommonJS.
 writeFileSync(join(OUT, 'package.json'), JSON.stringify({ type: 'module' }, null, 2) + '\n');
 
-// 4. Sello de versión, para que la deriva contra src/ sea detectable.
+// 5. Sello de versión, para que la deriva contra src/ sea detectable, y de
+//    procedencia, para poder volver al fuente desde el skill distribuido.
 const builtAt = new Date().toISOString();
-writeFileSync(STAMP, JSON.stringify({ srcHash, builtAt, node: process.version }, null, 2) + '\n');
+const source = sourceProvenance();
+writeFileSync(STAMP, JSON.stringify({ srcHash, builtAt, node: process.version, source }, null, 2) + '\n');
 
-// 5. Humo: si el bundle no arranca, mejor fallar acá que en manos del usuario.
+// 6. Humo: si el bundle no arranca, mejor fallar acá que en manos del usuario.
 const help = execFileSync('node', [join(OUT, 'cli.js'), '--help'], { encoding: 'utf8' });
 if (!help.includes('--format')) throw new Error('El CLI embebido no responde a --help como se esperaba.');
 
 const files = walk(OUT).length;
 console.log(`CLI embebido en ${relative(ROOT, OUT)}/ · ${files} archivos · src ${srcHash}`);
 
-// 6. Empaquetado opcional: un .zip con la carpeta del skill como única entrada
+// 7. Empaquetado opcional: un .zip con la carpeta del skill como única entrada
 //    de primer nivel, que es lo que esperan tanto claude.ai como --plugin-dir.
 if (pack) {
   const zip = join(ROOT, 'isams-boletin-skill.zip');

@@ -1,16 +1,14 @@
-import { mkdtempSync, existsSync, statSync } from 'node:fs';
+import { mkdtempSync, existsSync, statSync, readdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { createServer } from 'node:http';
-import { FileStore, HttpStore, InlineStore } from '../src/store.js';
-import { makeToken } from './maketoken.js';
+import { join, isAbsolute } from 'node:path';
+import { FileStore, InlineStore } from '../src/store.js';
+import * as store from '../src/store.js';
 
 let ok = 0, bad = 0;
 const t = (name: string, cond: boolean) => { cond ? ok++ : bad++; console.log(`  ${cond ? 'ok  ' : 'FALLA'} ${name}`); };
 
 console.log('\n6. Almacén de credenciales');
 
-// -- FileStore
 const dir = mkdtempSync(join(tmpdir(), 'store-'));
 const fp = join(dir, 'cred.json');
 const fs = new FileStore(fp);
@@ -19,38 +17,40 @@ await fs.save({ accessToken: 'a1', refreshToken: 'r1', tenant: 'x' });
 t('guarda y relee', (await fs.load()).refreshToken === 'r1');
 await fs.save({ accessToken: 'a2', refreshToken: 'r2', tenant: 'x' });
 t('sobrescribe con el rotado', (await fs.load()).refreshToken === 'r2');
-t('no deja temporales', !existsSync(join(dir, '.tmp')));
+t('no deja temporales', !readdirSync(dir).some((f) => f.endsWith('.tmp')));
 t('permisos 600', (statSync(fp).mode & 0o777) === 0o600);
 t('FileStore es escribible', fs.writable);
 t('InlineStore NO es escribible', !new InlineStore({}).writable);
 
-// -- HttpStore contra un servidor real
-let stored: any = { accessToken: 'srvA', refreshToken: 'srvR', tenant: 'britishroyal' };
-let lastAuth = '';
-const srv = createServer((req, res) => {
-  lastAuth = String(req.headers.authorization ?? req.headers['x-api-key'] ?? '');
-  if (req.method === 'GET') { res.setHeader('content-type','application/json'); return res.end(JSON.stringify(stored)); }
-  let b = ''; req.on('data', c => b += c);
-  req.on('end', () => { stored = JSON.parse(b); res.statusCode = 204; res.end(); });
-});
-await new Promise<void>(r => srv.listen(0, r));
-const url = `http://127.0.0.1:${(srv.address() as any).port}/token`;
+// W8: el endpoint HTTP se fue entero, junto con su clave en argv.
+t('HttpStore ya no existe', !('HttpStore' in store));
 
-const hs = new HttpStore({ url, apiKey: 'K123' });
-const got = await hs.load();
-t('HttpStore lee del endpoint', got.refreshToken === 'srvR');
-t('manda Bearer en Authorization', lastAuth === 'Bearer K123');
-await hs.save({ accessToken: 'nuevoA', refreshToken: 'nuevoR', tenant: 'britishroyal' });
-t('HttpStore persiste con POST', stored.refreshToken === 'nuevoR');
+// W4: los campos que hacen diagnosticable una rotación sospechosa.
+await fs.save({ accessToken: 'a3', refreshToken: 'r3', tenant: 'x', suspect: true, refreshTokenPrevious: 'abc123' });
+const conDudas = await fs.load();
+t('persiste suspect', conDudas.suspect === true);
+t('persiste la cola del refresh anterior', conDudas.refreshTokenPrevious === 'abc123');
+t('la cola anterior es solo una cola', (conDudas.refreshTokenPrevious ?? '').length === 6);
+await fs.save({ accessToken: 'a4', refreshToken: 'r4', tenant: 'x' });
+t('un guardado sin suspect lo limpia', (await fs.load()).suspect === undefined);
 
-const hs2 = new HttpStore({ url, apiKey: 'K123', header: 'X-API-Key' });
-await hs2.load();
-t('cabecera alternativa manda la clave cruda', lastAuth === 'K123');
+// W2: rutas absolutas y directorios que todavía no existen.
+const rel = new FileStore('cred-relativo.json');
+t('resuelve la ruta relativa a absoluta', isAbsolute(rel.path));
+t('el nombre del almacén usa la ruta absoluta', rel.name.includes(rel.path));
 
-// snake_case y envoltorio {data}
-stored = { data: { access_token: 'sA', refresh_token: 'sR' } };
-t('acepta snake_case y {data}', (await hs.load()).refreshToken === 'sR');
-srv.close();
+const anidado = join(dir, 'work', 'creds', 'credenciales.json');
+const fs2 = new FileStore(anidado);
+t('directorio inexistente: load devuelve vacío, no error', Object.keys(await fs2.load()).length === 0);
+await fs2.save({ accessToken: 'x', refreshToken: 'y', tenant: 'z' });
+t('crea los directorios intermedios que falten', existsSync(anidado));
+t('el archivo anidado nace con permisos 600', (statSync(anidado).mode & 0o777) === 0o600);
+t('y se puede releer', (await fs2.load()).refreshToken === 'y');
+
+// Escritura atómica: nunca se ve un archivo a medio escribir.
+t('el contenido guardado es JSON completo', (() => {
+  try { JSON.parse(readFileSync(anidado, 'utf8')); return true; } catch { return false; }
+})());
 
 console.log(`\n${ok} ok, ${bad} fallidas`);
 if (bad) process.exit(1);
