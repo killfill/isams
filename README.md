@@ -48,9 +48,24 @@ npm run boletin -- auth bootstrap  # cómo sacar credenciales del navegador
 | `--model <archivo>`      | Guarda además el `ReportModel` en JSON.                                                                      |
 | `--delay <ms>`           | Pausa entre llamadas. `0` por defecto: no se observaron cabeceras de rate limit.                             |
 | `--strict`               | Sale con código 1 si hay avisos de severidad `error`.                                                        |
-| `--quiet`                | Sin mensajes de progreso.                                                                                    |
+| `--verbose`              | Todo el detalle: tenant, libros y columnas por alumno, control de calidad y avisos `warn`.                   |
+| `--quiet`                | Solo `stable-md5`. No silencia `--strict`.                                                                   |
 
 El progreso y los avisos van a **stderr**; el informe a stdout. Se puede pipear.
+
+Por defecto la corrida dice lo mínimo —por quién va, qué escribió y la huella:
+
+```
+Extrayendo datos de Alexander…
+Extrayendo datos de Matilda…
+Escrito sandbox/one.html (41754 bytes).
+stable-md5: c36e7321df1f2ace9f14e3d16f9484d1
+```
+
+Lo que **no** se esconde nunca es que el informe no sea confiable: un periodo
+que ningún modelo reproduce se avisa igual, con o sin `--verbose`. El HTML no
+lleva línea de control de calidad adentro, así que para ese formato esta es la
+única señal que hay.
 
 ## Credenciales
 
@@ -219,6 +234,31 @@ vista para leer: matriz completa, una columna por evaluación, con color y
 tooltips. `md` es la misma matriz en tablas de datos, seguida de una tabla por
 asignatura con el bloque, el peso y la nota de cada evaluación: pensado para que
 lo lea otro programa o un modelo. `csv` es una fila por nota.
+
+### Saber si un informe cambió
+
+Cada corrida imprime a stderr una línea:
+
+```
+stable-md5: c36e7321df1f2ace9f14e3d16f9484d1
+```
+
+Es el md5 del contenido con la fecha de extracción normalizada. El HTML lleva
+impresa esa fecha, así que el md5 del archivo cambia en cada corrida aunque las
+notas sean idénticas; quien compara termina recortando la fecha a mano, y ese
+recorte es frágil. Esto lo evita: misma data, misma huella.
+
+```bash
+$ npm run boletin -- --format html --from-raw datos.json --output a.html --quiet
+stable-md5: c36e7321df1f2ace9f14e3d16f9484d1
+```
+
+Se mueve si cambia cualquier nota, promedio, asignatura o aviso, y también si
+cambia el renderizador —la pregunta que responde es "¿es este el mismo archivo
+que ya tengo?"—. Cada formato tiene la suya. `--quiet` no la silencia: quien
+automatiza es justamente quien la necesita.
+
+**No coincide con `md5sum archivo`**, a propósito.
 
 ## Qué hace
 

@@ -11,7 +11,7 @@ import { defaultJournalPath, Journal, tail, type Trigger } from './journal.js';
 import { bootstrapGuide } from './bootstrap.js';
 import { extract, ExtractError } from './extract.js';
 import { interpret } from './interpret.js';
-import { RENDERERS, FORMATS, isFormat, type Format } from './render/index.js';
+import { RENDERERS, FORMATS, isFormat, contentHash, type Format } from './render/index.js';
 import { PROFILES, profileFor } from './profiles/index.js';
 import type { RawExtract } from './types.js';
 
@@ -54,7 +54,16 @@ boletin — informe de notas desde el portal de apoderados iSAMS
                          otro formato sin gastar una extracción.
   --delay <ms>           Pausa entre llamadas a la API (por defecto 0).
   --strict               Sale con código 1 si hay avisos de severidad error.
-  --quiet                Sin mensajes de progreso.
+  --verbose              Todo el detalle: tenant, libros y columnas por alumno,
+                         control de calidad y avisos de cualquier severidad.
+  --quiet                Solo stable-md5 y los errores que abortan.
+
+ Huella del contenido:
+  Cada informe imprime a stderr una línea "stable-md5: <hex>". Es el md5 del
+  contenido con la fecha de extracción normalizada, así que dos corridas con
+  las mismas notas dan la misma huella aunque el archivo difiera. Sirve para
+  saber si un informe cambió respecto del anterior. NO coincide con
+  \`md5sum archivo\`, y eso es a propósito.
 
  Códigos de salida:
   0 ok · 2 argumentos inválidos · 3 credenciales rotas o ausentes (hace falta
@@ -89,6 +98,7 @@ interface Args {
   delayMs: number;
   strict: boolean;
   quiet: boolean;
+  verbose: boolean;
 }
 
 const VALUE_FLAGS = new Set([
@@ -96,7 +106,7 @@ const VALUE_FLAGS = new Set([
   'save-raw', 'from-raw', 'output',
   'refresh-token', 'token-file', 'journal', 'trigger', 'tenant',
 ]);
-const BOOL_FLAGS = new Set(['strict', 'quiet', 'no-refresh']);
+const BOOL_FLAGS = new Set(['strict', 'quiet', 'verbose', 'no-refresh']);
 
 function fail(msg: string): never {
   console.error(`error: ${msg}`);
@@ -176,6 +186,9 @@ export function parseArgs(argv: string[]): Args {
     if (positional.length) fail(`Argumento inesperado: "${positional[0]}".`);
   }
 
+  if (flags.has('quiet') && flags.has('verbose'))
+    fail('--quiet y --verbose se contradicen: elige uno.');
+
   const delayRaw = flags.get('delay');
   // Sin cabeceras de rate limit observadas; el default no penaliza.
   const delayMs = delayRaw === undefined ? 0 : Number(delayRaw);
@@ -203,6 +216,7 @@ export function parseArgs(argv: string[]): Args {
     delayMs,
     strict: flags.has('strict'),
     quiet: flags.has('quiet'),
+    verbose: flags.has('verbose'),
   };
 }
 
@@ -503,6 +517,10 @@ async function cmdAuthStatus(args: Args, log: (m: string) => void): Promise<void
 // ── 4. Informe ───────────────────────────────────────────────────────────────
 
 async function cmdReport(args: Args, log: (m: string) => void): Promise<void> {
+  // Detalle: solo con --verbose. Por defecto la corrida cuenta por quién va y
+  // qué escribió, nada más —salvo que algo salga mal, que se dice siempre.
+  const vlog = args.verbose ? log : () => {};
+
   // ── Credenciales: cargar, renovar si hace falta, persistir ─────────────────
   let tenant: string;
   let accessToken = '';
@@ -518,7 +536,7 @@ async function cmdReport(args: Args, log: (m: string) => void): Promise<void> {
     accessToken = resolved.accessToken;
     const info = inspectToken(accessToken);
     tenant = info.tenant;
-    log(`Tenant ${tenant} · token válido por ${Math.floor(info.secondsLeft / 60)} min.`);
+    vlog(`Tenant ${tenant} · token válido por ${Math.floor(info.secondsLeft / 60)} min.`);
     if (info.secondsLeft < 120)
       log('aviso: al token le quedan menos de 2 minutos; la extracción podría cortarse a mitad.');
   }
@@ -539,10 +557,11 @@ async function cmdReport(args: Args, log: (m: string) => void): Promise<void> {
         accessToken,
         parentsPath: args.parentsPath,
         delayMs: args.delayMs,
-        onProgress: log,
+        onProgress: vlog,
+        onStudent: (nombre) => log(`Extrayendo datos de ${nombre}…`),
       });
 
-  if (args.fromRawPath) log(`Leído ${args.fromRawPath} (extraído ${raw.extractedAt}).`);
+  if (args.fromRawPath) vlog(`Leído ${args.fromRawPath} (extraído ${raw.extractedAt}).`);
   if (args.saveRawPath) {
     writeFileSync(args.saveRawPath, JSON.stringify(raw, null, 1));
     log(`Extracción guardada en ${args.saveRawPath}.`);
@@ -550,15 +569,33 @@ async function cmdReport(args: Args, log: (m: string) => void): Promise<void> {
 
   const model = interpret(raw, profile);
   const v = model.verification;
-  log(
+  vlog(
     `${model.students.length} alumnos · ${v.periodsChecked} periodos · ` +
       `${v.reproduced} reproducidos, ${v.corrected} corregidos, ${v.estimated} estimados, ${v.mismatches} desajustes.`
   );
-  for (const w of model.warnings.filter((x) => x.severity !== 'info'))
-    log(`  [${w.severity}] ${w.code} · ${w.student}${w.subject ? ' · ' + w.subject : ''}: ${w.message}`);
+
+  // ❗ Lo que dice que el informe NO es confiable no se esconde nunca. El HTML
+  // no lleva línea de control de calidad adentro, así que para ese formato esto
+  // es la única señal que existe; silenciarla por defecto sería publicar un
+  // promedio sin respaldo sin que nadie se entere.
+  if (v.mismatches)
+    log(
+      `aviso: ${v.mismatches} periodo(s) sin respaldo — ningún modelo conocido reproduce el ` +
+        'promedio publicado. Esos promedios no son confiables.'
+    );
+
+  for (const w of model.warnings) {
+    if (w.severity === 'info') continue;
+    const linea = `  [${w.severity}] ${w.code} · ${w.student}${w.subject ? ' · ' + w.subject : ''}: ${w.message}`;
+    // Un `warn` es control de calidad interno —correcciones que el pipeline ya
+    // aplicó—; un `error` es el informe diciendo que no se lo puede creer.
+    if (w.severity === 'error') log(linea);
+    else vlog(linea);
+  }
 
   // ── Renderizar y escribir ──────────────────────────────────────────────────
-  const out = RENDERERS[args.format!].render(model, profile, { year: args.year });
+  const renderOpts = { year: args.year };
+  const out = RENDERERS[args.format!].render(model, profile, renderOpts);
 
   if (args.output) {
     writeFileSync(args.output, out);
@@ -566,6 +603,11 @@ async function cmdReport(args: Args, log: (m: string) => void): Promise<void> {
   } else {
     process.stdout.write(out);
   }
+
+  // Huella del contenido. Va a stderr incluso con --quiet: no es progreso, es
+  // salida, y quien la consume desde un script es justamente quien usa --quiet.
+  // A stdout no puede ir: sin --output, ahí va el informe.
+  console.error(`stable-md5: ${contentHash(model, profile, args.format!, renderOpts)}`);
   if (args.modelPath) {
     writeFileSync(args.modelPath, JSON.stringify(model, null, 1));
     log(`Modelo guardado en ${args.modelPath}.`);

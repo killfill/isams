@@ -111,17 +111,9 @@ function renderStudent(st: Student, p: SchoolProfile): string {
   }
   head1.push('<th class="fin" rowspan="2">Final</th>');
 
-  const alerts: string[] = [];
-  for (const sub of st.subjects) {
-    if (sub.final.value !== null && sub.final.value < p.scale.pass)
-      alerts.push(`${esc(sub.name)} final <b>${fmt(sub.final.value)}</b>`);
-    for (const per of sub.periods)
-      if (per.average.value !== null && per.average.value < p.scale.pass)
-        alerts.push(`${esc(sub.name)} ${esc(per.label.replace('Semestre', 'Sem.'))} <b>${fmt(per.average.value)}</b>`);
-  }
-  const alertBar = alerts.length
-    ? `<p class="alert">Bajo ${fmt(p.scale.pass)} &nbsp;·&nbsp; ${alerts.join(' &nbsp;&nbsp;/&nbsp;&nbsp; ')}</p>`
-    : '';
+  // Sin barra de alertas: el informe muestra las notas —el 🔴 ya marca cada una
+  // bajo la nota de aprobación— y quien lo lea decide qué destacar. Resumir
+  // aparte cuáles son las malas es análisis, y ese no es trabajo del render.
 
   return `
 <section class="alumno">
@@ -129,7 +121,6 @@ function renderStudent(st: Student, p: SchoolProfile): string {
     <div><h2>${esc(st.displayName)}</h2><p class="sub">${esc(st.formGroup)} · ${st.subjects.length} asignaturas</p></div>
     <div class="gen"><span class="glabel">Promedio general</span><span class="gval">${fmt(st.overall)}</span></div>
   </header>
-  ${alertBar}
   <div class="scroller"><table>
     <thead><tr>${head1.join('')}</tr><tr>${head2.join('')}</tr></thead>
     <tbody>${st.subjects.map((s) => renderRow(s, st, p)).join('')}</tbody>

@@ -25,6 +25,7 @@ function avg(a: Average | undefined, p: SchoolProfile): string {
   return `${v}${bajo}`;
 }
 
+/** Fila del resumen: la asignatura contra cada periodo, más el final. */
 function summaryRow(s: Subject, st: Student, p: SchoolProfile): string {
   const cols = st.periodLabels.map((l) => avg(s.periods.find((x) => x.label === l)?.average, p));
   const fin =
@@ -34,13 +35,47 @@ function summaryRow(s: Subject, st: Student, p: SchoolProfile): string {
   return `| ${cell(s.name)} | ${p.modelLabels[s.model].label} | ${cols.join(' | ')} | **${fin}** |`;
 }
 
-/** Fila de una evaluación individual. El peso es lo que explica el promedio. */
-function cellRow(c: Cell): string {
-  const bloque = (c.block ?? '—') + (c.heavier ? ' ▲' : '');
-  const peso = c.weightPct !== null ? `${c.weightPct}%` : '—';
-  const nota = c.value !== null ? fmt(c.value) : c.qualitative ? c.qualitative : '_pendiente_';
-  const marca = c.derived ? ' *(promedio de proceso, no es una nota)*' : c.absent ? ' 🚩 ausente' : '';
-  return `| ${cell(bloque)} | ${peso} | ${cell(c.label)} | ${nota}${marca} |`;
+/**
+ * Una evaluación dentro de la grilla del semestre.
+ *
+ * Las columnas van numeradas y no con el nombre de la evaluación porque cada
+ * asignatura tiene los suyos: en la columna 2 de una está "Ev. 2" y en la de
+ * otra "Nota Parcial 1". El nombre es además una etiqueta opaca de la API, que
+ * sirve para mostrar y nunca para deducir orden ni fecha.
+ */
+function gridCell(c: Cell | null, p: SchoolProfile): string {
+  if (!c) return '';
+  if (c.value === null) return c.qualitative ? cell(c.qualitative) : '·';
+  const marcas = (c.derived ? ' `=`' : '') + (c.absent ? ' 🚩' : '');
+  const bajo = c.value < p.scale.pass ? ' 🔴' : '';
+  return `${fmt(c.value)}${bajo}${marcas}`;
+}
+
+/**
+ * Una tabla por alumno y por periodo: asignaturas en las filas, evaluaciones en
+ * las columnas, el promedio del periodo al final. Es la misma vista del HTML,
+ * cortada por semestre —markdown no tiene columnas agrupadas, así que la tabla
+ * ancha de allá se parte en una por periodo en vez de crecer sin fin a la derecha.
+ */
+function periodTable(st: Student, label: string, p: SchoolProfile): string[] {
+  const n = st.cellsPerPeriod[label] ?? 0;
+  // Sin evaluaciones no hay grilla que dibujar; el promedio del periodo ya salió
+  // en el resumen. Es el caso de los periodos agregados tipo "PROMEDIOS 2026".
+  if (n === 0) return [];
+
+  const conEstePeriodo = st.subjects
+    .map((s) => ({ s, per: s.periods.find((x) => x.label === label) }))
+    .filter((x) => x.per !== undefined);
+  if (!conEstePeriodo.length) return [];
+
+  const head = ['Asignatura', ...Array.from({ length: n }, (_, i) => String(i + 1)), 'Prom'];
+  const out = [`### ${label}`, '', `| ${head.join(' | ')} |`, `|${head.map(() => '---').join('|')}|`];
+  for (const { s, per } of conEstePeriodo) {
+    const celdas = Array.from({ length: n }, (_, i) => gridCell(per!.cells[i] ?? null, p));
+    out.push(`| ${cell(s.name)} | ${celdas.join(' | ')} | ${avg(per!.average, p)} |`);
+  }
+  out.push('');
+  return out;
 }
 
 export function renderMarkdown(model: ReportModel, p: SchoolProfile, opts: RenderOptions = {}): string {
@@ -74,7 +109,9 @@ export function renderMarkdown(model: ReportModel, p: SchoolProfile, opts: Rende
   out.push(
     'Marcas: `⚠️ pub. X` promedio publicado distorsionado, corregido acá · ' +
       '`(est)` periodo en curso, estimado con las notas presentes · ' +
-      '`🔴` bajo ' + fmt(p.scale.pass) + ' · `▲` bloque que más pesa · `🚩` inasistencia.',
+      '`🔴` bajo ' + fmt(p.scale.pass) + ' · `🚩` inasistencia · ' +
+      '`=` no es una nota: es el promedio de las evaluaciones de proceso, que el libro ' +
+      'cuenta como una más · `·` evaluación sin nota todavía.',
     '',
   );
 
@@ -82,44 +119,15 @@ export function renderMarkdown(model: ReportModel, p: SchoolProfile, opts: Rende
     out.push('---', '', `## ${st.displayName} — ${st.formGroup}`, '');
     out.push(`Promedio general: **${fmt(st.overall)}** (${st.overallBasis} asignaturas numéricas)`, '');
 
-    // Matriz: asignaturas × periodos. Es la misma vista que encabeza el HTML.
+    // Resumen: asignaturas × periodos. Es donde vive el final, que por definición
+    // no cabe en la tabla de un periodo.
     const head = ['Asignatura', 'Cálculo', ...st.periodLabels, 'Final'];
-    out.push(`| ${head.join(' | ')} |`);
-    out.push(`|${head.map(() => '---').join('|')}|`);
+    out.push('### Resumen', '', `| ${head.join(' | ')} |`, `|${head.map(() => '---').join('|')}|`);
     for (const s of st.subjects) out.push(summaryRow(s, st, p));
     out.push('');
 
-    const bajo: string[] = [];
-    for (const s of st.subjects) {
-      if (s.final.value !== null && s.final.value < p.scale.pass)
-        bajo.push(`${s.name} final ${fmt(s.final.value)}`);
-      for (const per of s.periods)
-        if (per.average.value !== null && per.average.value < p.scale.pass)
-          bajo.push(`${s.name} ${per.label} ${fmt(per.average.value)}`);
-    }
-    if (bajo.length) out.push(`> 🔴 **Bajo ${fmt(p.scale.pass)}:** ${bajo.join(' · ')}`, '');
-
-    // Detalle: cada nota que entra al promedio, con su peso. Es lo que permite
-    // rehacer el cálculo a mano y discutirlo con el colegio.
-    out.push(`### Detalle por asignatura — ${st.displayName}`, '');
-    for (const s of st.subjects) {
-      const finTxt = s.final.source === 'qualitative' ? (s.final.text ?? '—') : fmt(s.final.value);
-      out.push(`#### ${s.name} · ${p.modelLabels[s.model].label} · final **${finTxt}**`, '');
-
-      for (const per of s.periods) {
-        const a = per.average;
-        const nota =
-          a.source === 'recalculated'
-            ? ` — ⚠️ la plataforma publica ${fmt(a.published)}, distorsionado por ${a.missingWeightPct}% de peso sin notas; corregido acá`
-            : a.source === 'estimated'
-              ? ' — periodo en curso, estimado con las notas presentes'
-              : '';
-        out.push(`**${per.label}** · promedio ${avg(a, p)}${nota}`, '');
-        out.push('| Bloque | Peso | Evaluación | Nota |', '|---|---|---|---|');
-        for (const c of per.cells) out.push(cellRow(c));
-        out.push('');
-      }
-    }
+    // Y después el detalle, un periodo a la vez.
+    for (const label of st.periodLabels) out.push(...periodTable(st, label, p));
   }
 
   out.push('---', '', '## Cómo se calcula el promedio del semestre', '');

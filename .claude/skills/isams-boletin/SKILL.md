@@ -43,7 +43,9 @@ from the grades and their weights, nothing from when they happened.
   number; it is not a second opinion worth mentioning.
 - **Lead with what the parent asked**—the overall average, the subject they named,
   anything below the pass mark. Rank by what affects the student, not by what
-  the pipeline found interesting.
+  the pipeline found interesting. The report marks each failing grade with `🔴`
+  but no longer summarises them into a banner: deciding what matters and how to
+  say it is your job, not the renderer's.
 - **Say when a grade will still move**—a term marked `(est)` is in progress and
   estimated from the grades entered so far. That changes how a parent should
   read a low mark, so it is worth a clause.
@@ -104,7 +106,7 @@ root, or the absolute path to this skill's `cli/cli.js` from anywhere else. Run
    | Reader | Format | Why |
    |---|---|---|
    | A person — the user wants to *see* the grades | `html` | Full matrix, one column per assessment, with colour, weight shading and hover tooltips. Not readable as text. |
-   | A model — you need to read, evaluate or reason over the results | `md` | The same data as data-tables: the subject × term matrix, then per-subject tables with every assessment, its block, its weight and its grade. |
+   | A model — you need to read, evaluate or reason over the results | `md` | The same data as data-tables: per student, a summary matrix of subject × term with the final, then one grid per term — subjects down the side, that term's assessments across, with the term average. |
 
    → the `--format` value
 3. Run the CLI, per the mode you picked.
@@ -115,6 +117,9 @@ root, or the absolute path to this skill's `cli/cli.js` from anywhere else. Run
    ```bash
    BOLETIN --format html --token-file /abs/path/credenciales.json --output notas.html
    ```
+
+   Add `--verbose` when a run misbehaves and you need the full trace; it is
+   noise the rest of the time.
 
    **Managed (scheduled task)** — five steps, because the store of record is
    unreachable from inside the container:
@@ -157,12 +162,45 @@ root, or the absolute path to this skill's `cli/cli.js` from anywhere else. Run
    consumed — skip step 3 entirely rather than rewriting an unchanged document.
 
    → the report file
-4. Read the file back — not stdout, which also carries progress lines. Take the
-   quality-control line at the top and check one number in it: **mismatches**.
-   Then read the grades themselves.
+4. Check whether the pipeline can vouch for the numbers, then read them.
+
+   The run is quiet by default: per-student progress, the file written, and the
+   digest. **Anything it says beyond that is bad news and is worth reading.**
+   Specifically, a line containing `sin respaldo` or `[error] MODEL_MISMATCH`
+   means a term could not be reproduced by any known model and its average has
+   no backing. `--verbose` adds the full quality-control counts and the internal
+   `[warn]` corrections, which are not for the parent.
+
+   The `md` report also carries a `Control de calidad` line with the mismatch
+   count. **The `html` report does not** — for that format the run's own output
+   is the only place unreliability surfaces, so do not skip it.
+
+   Then read the grades themselves, from the file.
    → the figures to report, and a stop signal if any term is unbacked
 5. Report per the Output contract below.
    → the answer, or an explicit statement of what cannot be trusted
+
+### Telling whether anything changed
+
+Every report run prints one line to stderr:
+
+```
+stable-md5: c36e7321df1f2ace9f14e3d16f9484d1
+```
+
+It is the digest of the report content with the extraction timestamp normalised
+away, so **two runs over the same grades produce the same value even though the
+files differ** — the HTML has the extraction date printed in it, which defeats a
+plain checksum. `--quiet` does not suppress it.
+
+Use it when you would otherwise re-read and compare a report by hand: if the
+value matches the previous run's, nothing in the grades moved and there is
+nothing new to tell the parent. It changes if any grade, average, subject or
+warning changes, and differs between formats.
+
+It is deliberately **not** `md5sum <file>`. Do not present it to the user as a
+file checksum, and do not put it in the report you write for them — it is an
+internal handle for deciding whether there is news.
 
 ### Output
 
@@ -190,7 +228,13 @@ passing on to the reader; the rest are internal.
 
 `⚠️ pub. X` the figure is corrected, X is the platform's broken one · `(est)`
 term in progress, estimated from the grades so far and will move · `🔴` below
-the pass mark · `▲` the block that weighs most · `🚩` absence.
+the pass mark · `🚩` absence · `=` not a grade, it is the average of the
+process assessments, which the markbook counts as one more · `·` an assessment
+with no grade entered yet.
+
+Assessment columns in the per-term grids are numbered, not named: each subject
+has its own labels, and those labels are opaque — column 3 is not the third
+test, and its position implies no date.
 
 ## Credentials
 

@@ -21,7 +21,14 @@ export interface ExtractOptions {
   delayMs?: number;
   /** Override del host. Por defecto https://{tenant}.isams.cloud/api/portals. */
   baseUrl?: string;
+  /** Detalle paso a paso. Solo se muestra con --verbose. */
   onProgress?: (msg: string) => void;
+  /**
+   * Un titular por estudiante, al empezar con él. Se muestra siempre: es lo
+   * único que explica por qué el proceso está tardando —son ~26 peticiones
+   * secuenciales y sin esto la terminal se queda muda medio minuto.
+   */
+  onStudent?: (nombre: string) => void;
 }
 
 export class ExtractError extends Error {}
@@ -35,6 +42,7 @@ export async function extract(opts: ExtractOptions): Promise<RawExtract> {
   const { tenant, accessToken, parentsPath } = opts;
   const delay = opts.delayMs ?? 300;
   const log = opts.onProgress ?? (() => {});
+  const titular = opts.onStudent ?? (() => {});
   const base = opts.baseUrl ?? `https://${tenant}.isams.cloud/api/portals`;
 
   async function get<T>(path: string): Promise<T> {
@@ -76,6 +84,10 @@ export async function extract(opts: ExtractOptions): Promise<RawExtract> {
     const schoolId = String(s.schoolId ?? '');
     if (!schoolId) throw new ExtractError('Un estudiante vino sin schoolId; no se puede consultar su libro.');
     const displayName = String(s.fullName ?? s.preferredName ?? `Estudiante ${i + 1}`);
+
+    // Nombre de pila: alcanza para saber por quién va, y expone menos que el
+    // nombre completo en una terminal o en un log de tarea programada.
+    titular(String(s.preferredName ?? displayName.split(' ')[0]));
 
     // ── 2. Markbooks ────────────────────────────────────────────────────────
     // Los id no son predecibles: hay que enumerarlos, nunca generarlos.

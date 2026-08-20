@@ -2,7 +2,7 @@
 import { start } from './mockserver.js';
 import { extract } from '../src/extract.js';
 import { interpret } from '../src/interpret.js';
-import { RENDERERS } from '../src/render/index.js';
+import { RENDERERS, contentHash, FORMATS } from '../src/render/index.js';
 import { britishroyal } from '../src/profiles/britishroyal.js';
 
 const stop = await start(8731);
@@ -63,6 +63,75 @@ check('csv: entrecomilla nombres con coma', csv.includes('"Historia, Geografía 
 const md = RENDERERS.md.render(model, britishroyal);
 check('md: una sección por alumno', model.students.every((s) => md.includes(`## ${s.displayName}`)));
 check('md: incluye la leyenda de modelos', md.includes('Cómo se calcula'));
+
+// Estructura: persona primero, y dentro de cada persona un periodo a la vez.
+const st0 = model.students[0];
+/** El bloque de markdown que va desde el encabezado de un alumno al del siguiente. */
+const seccion = (i: number) => {
+  const desde = md.indexOf(`## ${model.students[i].displayName}`);
+  const hasta = i + 1 < model.students.length ? md.indexOf(`## ${model.students[i + 1].displayName}`) : md.length;
+  return md.slice(desde, hasta);
+};
+check('md: cada alumno abre con su resumen, antes de los periodos',
+  model.students.every((s, i) => {
+    const sec = seccion(i);
+    const primerPeriodo = s.periodLabels.find((l) => (s.cellsPerPeriod[l] ?? 0) > 0);
+    return sec.includes('### Resumen') &&
+      (!primerPeriodo || sec.indexOf('### Resumen') < sec.indexOf(`### ${primerPeriodo}`));
+  }));
+check('md: el final de cada asignatura vive en el resumen',
+  model.students.every((s, i) => seccion(i).split('### ')[1].includes('| Final |')));
+check('md: una tabla por periodo con evaluaciones',
+  st0.periodLabels.filter((l) => (st0.cellsPerPeriod[l] ?? 0) > 0).every((l) => md.includes(`### ${l}`)));
+check('md: la grilla del periodo numera las columnas y cierra con Prom',
+  /\| Asignatura \| 1 \| 2 \|.*\| Prom \|/.test(md), md.split('\n').find((l) => l.includes('| Prom |')));
+check('md: los periodos de un alumno van antes del siguiente alumno', (() => {
+  if (model.students.length < 2) return true;
+  const corte = md.indexOf(`## ${model.students[1].displayName}`);
+  const primerPeriodo = st0.periodLabels.find((l) => (st0.cellsPerPeriod[l] ?? 0) > 0)!;
+  return md.indexOf(`### ${primerPeriodo}`) < corte;
+})());
+check('md: ya no hay detalle por asignatura', !md.includes('Detalle por asignatura'));
+check('md: sin banda de resumen "Bajo"', !/\*\*Bajo /.test(md));
+check('md: pero cada nota bajo la aprobación sigue marcada', md.includes('🔴'));
+check('md: marca las evaluaciones sin nota', md.includes(' · '));
+check('md: documenta las marcas que usa', md.includes('`=`') && md.includes('🚩'));
+check('md: no anuncia marcas que ya no usa', !md.includes('▲'));
+
+const html = RENDERERS.html.render(model, britishroyal, { year: 2026 });
+check('html: sin banda de alertas', !html.includes('class="alert"'));
+check('html: pero sigue marcando cada nota bajo la aprobación', html.includes('fail'));
+
+console.log('\n6. Huella del contenido');
+// El problema que resuelve: el HTML lleva impresa la fecha de extracción, así
+// que el md5 del archivo cambia en cada corrida aunque las notas sean idénticas
+// y quien compara termina recortando la fecha a mano.
+const masTarde = { ...model, extractedAt: '2027-03-04T09:15:00.000Z', renderedAt: '2027-03-04T09:15:01.000Z' };
+
+for (const fmt of FORMATS) {
+  const h = contentHash(model, britishroyal, fmt, { year: 2026 });
+  check(`${fmt}: la huella es un md5`, /^[0-9a-f]{32}$/.test(h), h);
+  check(`${fmt}: misma data, misma huella`, h === contentHash(model, britishroyal, fmt, { year: 2026 }));
+  check(`${fmt}: otra fecha de extracción, misma huella`,
+    h === contentHash(masTarde, britishroyal, fmt, { year: 2026 }));
+}
+
+// …y sin embargo el archivo sí cambia: por eso la huella no es md5sum.
+const htmlAhora = RENDERERS.html.render(model, britishroyal, { year: 2026 });
+const htmlDespues = RENDERERS.html.render(masTarde, britishroyal, { year: 2026 });
+check('el archivo sí cambia con la fecha', htmlAhora !== htmlDespues);
+
+// Lo que sí tiene que moverla.
+const conNotaCambiada = structuredClone(model);
+const celda = conNotaCambiada.students[0].subjects.flatMap((x: any) => x.periods.flatMap((p: any) => p.cells)).find((c: any) => c.value !== null);
+celda.value = (celda.value ?? 0) + 1;
+check('cambiar una nota cambia la huella',
+  contentHash(model, britishroyal, 'html', { year: 2026 }) !== contentHash(conNotaCambiada, britishroyal, 'html', { year: 2026 }));
+check('cambiar el año cambia la huella',
+  contentHash(model, britishroyal, 'html', { year: 2026 }) !== contentHash(model, britishroyal, 'html', { year: 2027 }));
+
+const huellas = FORMATS.map((f) => contentHash(model, britishroyal, f, { year: 2026 }));
+check('cada formato tiene su propia huella', new Set(huellas).size === FORMATS.length);
 
 stop();
 console.log(`\n${pass} ok, ${failn} fallidas`);
