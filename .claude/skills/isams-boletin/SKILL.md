@@ -1,6 +1,6 @@
 ---
 name: isams-boletin
-description: Generates the school report card — the matrix of grades and averages per student, subject and term — pulled live from iSAMS as HTML or Markdown. Use when asked for a student's grades, averages, report card or academic standing.
+description: Generates the school report card — grades and averages per student, subject and term, pulled live from iSAMS as HTML or Markdown. Use when asked for a student's grades, averages or report card.
 metadata:
   source: isams-boletin
   cli: cli/cli.js
@@ -17,16 +17,17 @@ per-term average and the final. A CLI does the extraction and the arithmetic; it
 ships compiled inside this skill and runs with plain `node`, no `npm install`.
 Your work is choosing how to run it and reading the result honestly.
 
-The one thing that makes this report worth generating: **the averages are
-recomputed, not copied.** In the weighted model, when a block that carries
-weight has no grades yet, iSAMS weights it as **zero** instead of excluding it. A
-term with a 30% block at 4,9 and a 70% block still empty is published as **1,5**
-— a failing mark for a student who is actually at 4,9, and the final average
-inherits it. So every term is reproduced from its assessments: if the published
-value checks out it is used as-is, and if it is distorted the weights are
-renormalised over the blocks that do have grades. The parent reading the portal
-sees the distorted number. You are holding the corrected one, and the gap
-between them is usually the most important thing in the report.
+The averages in the report are recomputed from the individual assessments rather
+than copied from the platform, because iSAMS publishes a distorted figure in one
+known case: in the weighted model, a block that carries weight but has no grades
+yet is weighted as **zero** instead of excluded, which sinks the term. The CLI
+detects that and renormalises over the blocks that do have grades.
+
+**This is plumbing. Treat the numbers in the report as simply the grades, and
+report them as such.** The correction is why they can be trusted, not a finding.
+A parent asked what their child is getting, not how the pipeline works — the
+marks in the file exist so you can read it correctly, not so you can narrate it
+back.
 
 The data is thinner than it looks, and that shapes what you may claim from it.
 The API exposes no assessment dates — column order is the only hint of sequence,
@@ -36,25 +37,29 @@ from the grades and their weights, nothing from when they happened.
 
 ## Instructions
 
-- **Never quote the platform's published average as fact**—it is wrong in a
-  specific, predictable way, and repeating it tells a parent their child is
-  failing a subject they are passing.
-- **Where an average was corrected, give both numbers and say which is which**—a
-  parent who sees only your corrected figure cannot reconcile it with the portal
-  in front of them, and will assume one of you is broken.
+- **Report the grade, never the arithmetic behind it**—quote the figure the
+  report gives and stop there. The `⚠️ pub.` value is the platform's broken
+  number; it is not a second opinion worth mentioning.
+- **Lead with what the parent asked**—the overall average, the subject they named,
+  anything below the pass mark. Rank by what affects the student, not by what
+  the pipeline found interesting.
+- **Say when a grade will still move**—a term marked `(est)` is in progress and
+  estimated from the grades entered so far. That changes how a parent should
+  read a low mark, so it is worth a clause.
 - **Match the format to who reads the output, not to what is convenient**—HTML
   is unreadable as text and Markdown is ugly to a person; picking wrong wastes
   the run.
 - **Treat a non-zero mismatch count as a refusal to report**—it means a term
-  could not be reproduced by any known model, so the number on screen has no
-  backing. Name the affected subjects and say the figure is unreliable instead
-  of passing it along.
-- **Let the warnings drive what you surface first**—a corrected average or a
-  failing final matters more than the overall mean, and the report already
-  ranks that for you.
+  could not be reproduced by any known model, so the number has no backing. Name
+  the affected subjects and say the figure is unreliable rather than passing it
+  along. This is the one pipeline fact worth surfacing, and only when it happens.
 
 Do not produce:
 
+- **Any mention of corrections, distortion, published-versus-computed values, or
+  how many terms were reproduced**—it is internal quality control for a bug in
+  someone else's API. Saying "none of these averages were distorted" is as
+  irrelevant to a parent as saying the JSON parsed cleanly.
 - **Any claim about trend, progress or improvement over time**—there are no
   assessment dates, so "grades are improving" is unfalsifiable from this data no
   matter how the columns are ordered.
@@ -100,34 +105,39 @@ the quality-control line before saying anything about the numbers.
    ```
    → the report file
 4. Read the file back — not stdout, which also carries progress lines. Take the
-   quality-control line at the top: terms checked, reproduced, corrected,
-   estimated, **mismatches**. Then read the warnings.
-   → a trust assessment, and the list of corrections worth naming
+   quality-control line at the top and check one number in it: **mismatches**.
+   Then read the grades themselves.
+   → the figures to report, and a stop signal if any term is unbacked
 5. Report per the Output contract below.
    → the answer, or an explicit statement of what cannot be trusted
 
 ### Output
 
 *For:* the guardian who asked, or the model that will reason over the grades.
-Parents know their child's subjects and the 1–7 scale; they do not know what a
-weighted block is, so explain a correction in terms of the grade, not the model.
+Parents know their child's subjects and the 1–7 scale, and nothing about how the
+report is built. Write to someone who wants to know how their kid is doing.
 
-*Chat:* For `html`, the file path and a two-or-three line summary — overall
-average, anything below the pass mark, and any corrected average with both
-figures. For `md`, answer the question that was asked, grounded in the tables
-you just read.
+*Chat:* For `html`, the file path and a two-or-three line summary — the overall
+average, anything below the pass mark, and whether those marks are still moving.
+For `md`, answer the question that was asked, grounded in the tables you read.
+Either way, only the grades: no commentary on the extraction, the arithmetic or
+the state of the source data.
 
 *File:* the OUTPUT path.
 
 *Validate:* before reporting a single number, confirm the mismatch count is
-zero. If it is not, name the affected subjects and withhold their figures. Check
-that every average you quote as corrected carries its published counterpart.
+zero. If it is not, name the affected subjects and withhold their figures. Then
+re-read your draft and cut every sentence that is about the report rather than
+about the student.
 
 ### Marks in the output
 
-`⚠️ pub. X` corrected here, X is what the platform publishes · `(est)` term in
-progress, estimated from the grades so far and will move · `🔴` below the pass
-mark · `▲` the block that weighs most · `🚩` absence.
+These decode the tables so you can read them. Only `(est)` and `🔴` are worth
+passing on to the reader; the rest are internal.
+
+`⚠️ pub. X` the figure is corrected, X is the platform's broken one · `(est)`
+term in progress, estimated from the grades so far and will move · `🔴` below
+the pass mark · `▲` the block that weighs most · `🚩` absence.
 
 ## Credentials
 

@@ -10,7 +10,8 @@
     "prepare": "node scripts/build-skill.mjs",
     "build:skill": "node scripts/build-skill.mjs",
     "build:skill:check": "node scripts/build-skill.mjs --check",
-    "check": "npm run typecheck && npm test && npm run build:skill:check"
+    "check": "npm run typecheck && npm test && npm run build:skill:check",
+    "pack:skill": "node scripts/build-skill.mjs --pack"
   },
   "bin": {
     "boletin": "./src/cli.ts"

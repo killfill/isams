@@ -3,6 +3,7 @@
 //
 //   node scripts/build-skill.mjs           reconstruye la copia embebida
 //   node scripts/build-skill.mjs --check   falla si quedó desactualizada
+//   node scripts/build-skill.mjs --pack    reconstruye y empaqueta el .zip
 //
 // El CLI no tiene dependencias de runtime (solo node:fs, node:path, node:url),
 // así que basta con tsc: no hace falta bundler.
@@ -20,6 +21,7 @@ const OUT = join(SKILL, 'cli');
 const STAMP = join(OUT, 'BUILD.json');
 
 const check = process.argv.includes('--check');
+const pack = process.argv.includes('--pack');
 
 /** Lista recursiva de archivos bajo dir, en orden estable. */
 function walk(dir) {
@@ -89,3 +91,16 @@ if (!help.includes('--format')) throw new Error('El CLI embebido no responde a -
 
 const files = walk(OUT).length;
 console.log(`CLI embebido en ${relative(ROOT, OUT)}/ · ${files} archivos · src ${srcHash}`);
+
+// 6. Empaquetado opcional: un .zip con la carpeta del skill como única entrada
+//    de primer nivel, que es lo que esperan tanto claude.ai como --plugin-dir.
+if (pack) {
+  const zip = join(ROOT, 'isams-boletin-skill.zip');
+  rmSync(zip, { force: true });
+  execFileSync('zip', ['-r', '-q', '-X', zip, 'isams-boletin', '-x', '*.DS_Store'], {
+    cwd: dirname(SKILL),
+    stdio: 'inherit',
+  });
+  const kb = Math.round(statSync(zip).size / 1024);
+  console.log(`Empaquetado ${relative(ROOT, zip)} · ${kb} KB`);
+}
