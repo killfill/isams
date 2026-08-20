@@ -4,6 +4,7 @@ Genera un informe de notas desde el portal de apoderados iSAMS. Un comando:
 token → API → informe en HTML, Markdown o CSV.
 
 Source: https://claude.ai/cowork/project/01a01b7e-25f4-7330-934f-cd05486bc697
+Daily execution in Claude Web Project: https://claude.ai/cowork/project/01a01fc6-6391-74de-a2ab-70b242850664
 
 ```bash
 npm install                          # requiere Node 20+
@@ -30,7 +31,7 @@ npm run boletin -- auth bootstrap  # cómo sacar credenciales del navegador
 
 | Opción                   |                                                                                                              |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `--format <f>`           | `html`, `md`, `csv` o `email`. **Requerido.** Ver "Formatos".                                               |
+| `--format <f>`           | `html`, `md`, `csv` o `email`. **Requerido.** Ver "Formatos".                                                |
 | `[salida]`               | Archivo de salida. Si se omite, escribe a stdout.                                                            |
 | `--output <archivo>`     | Archivo de salida. También se acepta como posicional.                                                        |
 | `--token <jwt>`          | Access token suelto. Mejor `ISAMS_TOKEN`: en `--token` queda en el historial del shell y es visible en `ps`. |
@@ -71,10 +72,10 @@ lleva línea de control de calidad adentro, así que para ese formato esta es la
 
 Hay **dos** tokens y hacen cosas distintas:
 
-|                 | Dura        | Para qué                                              |
-| --------------- | ----------- | ----------------------------------------------------- |
-| `access_token`  | 1 hora      | Consultar la API de datos.                            |
-| `refresh_token` | sin medir*  | Obtener access tokens nuevos sin volver al navegador. |
+|                 | Dura       | Para qué                                              |
+| --------------- | ---------- | ----------------------------------------------------- |
+| `access_token`  | 1 hora     | Consultar la API de datos.                            |
+| `refresh_token` | sin medir* | Obtener access tokens nuevos sin volver al navegador. |
 
 \* Cuánto vive la cadena —deslizante o absoluta— no está medido, así que no hay
 número que dar. La bitácora lo responde con el tiempo, en `chainAgeSec`.
@@ -99,17 +100,23 @@ Abre una ventana **de incógnito**, entra al portal y ejecuta en la consola:
     return
   }
   const o = JSON.parse(sessionStorage[k])
-  copy(JSON.stringify({
-    accessToken: o.access_token,
-    refreshToken: o.refresh_token,
-    tenant: location.hostname.split(".")[0],
-  }, null, 2))
+  copy(
+    JSON.stringify(
+      {
+        accessToken: o.access_token,
+        refreshToken: o.refresh_token,
+        tenant: location.hostname.split(".")[0],
+      },
+      null,
+      2
+    )
+  )
   sessionStorage.removeItem(k)
   alert(
     "Credenciales copiadas al portapapeles.\n\n" +
-    "Al cerrar este aviso la pestaña quedará en blanco. Es a propósito: " +
-    "evita que el portal siga renovando el token y te lo invalide.\n\n" +
-    "Guarda el portapapeles como archivo de credenciales (NO lo pegues en el chat)."
+      "Al cerrar este aviso la pestaña quedará en blanco. Es a propósito: " +
+      "evita que el portal siga renovando el token y te lo invalide.\n\n" +
+      "Guarda el portapapeles como archivo de credenciales (NO lo pegues en el chat)."
   )
   location.replace("about:blank")
 })()
@@ -158,11 +165,11 @@ ahí salen cuatro consecuencias que no son opcionales:
 Todo intento cae en exactamente uno de tres estados, porque piden cosas
 distintas de quien llama:
 
-| Estado          | Cuándo                                                        | El archivo             | Salida |
-| --------------- | ------------------------------------------------------------- | ---------------------- | ------ |
-| `ok`            | 2xx con `refresh_token`                                       | se reescribe rotado    | `0`    |
-| `dead`          | HTTP 400 `invalid_grant`                                      | queda intacto          | `3`    |
-| `indeterminate` | error de red, 5xx, cuerpo ilegible, o 2xx sin `refresh_token` | se marca `suspect`     | `5`    |
+| Estado          | Cuándo                                                        | El archivo          | Salida |
+| --------------- | ------------------------------------------------------------- | ------------------- | ------ |
+| `ok`            | 2xx con `refresh_token`                                       | se reescribe rotado | `0`    |
+| `dead`          | HTTP 400 `invalid_grant`                                      | queda intacto       | `3`    |
+| `indeterminate` | error de red, 5xx, cuerpo ilegible, o 2xx sin `refresh_token` | se marca `suspect`  | `5`    |
 
 La distinción que importa es `dead` contra `indeterminate`. La primera es una
 afirmación del servidor sobre este token: no reintentes, rehaz el bootstrap. La
@@ -266,13 +273,13 @@ automatiza es justamente quien la necesita.
 de siempre con el CSS movido: es otro documento, porque un cliente de correo no
 es un navegador. Comprobado:
 
-| Lo que usa el HTML web | Qué pasa en el correo |
-| ---------------------- | --------------------- |
-| `<style>` de 6,6 KB | Gmail borra el bloque **entero** si pasa de ~8 KB, si algo no le gusta, o si adentro hay un `background-image: url(...)` |
-| `var(--…)` ×50 | Gmail soporta `var()` pero **no la declaración**: los colores quedan sin valor |
-| `:hover` con 167 tooltips | No existe en correo. Es lo único que dice qué evaluación es cada columna numerada |
-| `display:flex`, `grid`, `position` | Outlook de escritorio usa el motor de Word: no los soporta |
-| `overflow-x` para la tabla ancha | No hay scroll interno en un correo: la tabla se corta |
+| Lo que usa el HTML web             | Qué pasa en el correo                                                                                                    |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `<style>` de 6,6 KB                | Gmail borra el bloque **entero** si pasa de ~8 KB, si algo no le gusta, o si adentro hay un `background-image: url(...)` |
+| `var(--…)` ×50                     | Gmail soporta `var()` pero **no la declaración**: los colores quedan sin valor                                           |
+| `:hover` con 167 tooltips          | No existe en correo. Es lo único que dice qué evaluación es cada columna numerada                                        |
+| `display:flex`, `grid`, `position` | Outlook de escritorio usa el motor de Word: no los soporta                                                               |
+| `overflow-x` para la tabla ancha   | No hay scroll interno en un correo: la tabla se corta                                                                    |
 
 Por eso el formato `email` va con estilos en línea en cada elemento, colores
 literales y maquetación de tablas, sin un solo bloque `<style>` que Gmail pueda
